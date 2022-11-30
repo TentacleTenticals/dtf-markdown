@@ -107,7 +107,9 @@ window.EmojiPicker = class EmojiPicker {
     this.naLabel.textContent = 'Not animated';
     this.naLabel.style = `
     text-align: center;
-    color: white;
+    color: rgb(197 197 197);
+    font-size: 14px;
+    padding: 3px 0px 3px 0px;
     margin-top: 5px;
     box-shadow: inset 0px 0px 8px 0px rgb(134 167 185);
     cursor: pointer;`;
@@ -126,7 +128,9 @@ window.EmojiPicker = class EmojiPicker {
     this.aLabel.textContent = 'Animated';
     this.aLabel.style = `
     text-align: center;
-    color: white;
+    color: rgb(197 197 197);
+    font-size: 14px;
+    padding: 3px 0px 3px 0px;
     box-shadow: inset 0px 0px 8px 0px rgb(134 167 185);
     cursor: pointer;`;
     this.aLabel.onclick = () => {
