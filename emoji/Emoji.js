@@ -31,7 +31,7 @@ class Emoji {
     this.e.src = url;
     this.e.onclick = () => {
       document.querySelector(
-        `div[class='writeComment']`
+        `div[class='content_editable']`
       ).innerHTML += `::${name}::`;
       document.querySelector(`div[class='emojiPicker']`).remove();
     };
