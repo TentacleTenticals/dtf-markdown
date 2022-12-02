@@ -12,16 +12,6 @@
  
 class Emoji {
   constructor({ path, name, url, type }) {
-    // this.m=document.createElement('div');
-    // this.m.className='emojiContainer';
-    // path.appendChild(this.m);
- 
-    // this.name=document.createElement('p');
-    // this.name.className='emojiName';
-    // this.name.textContent='';
-    // this.name.textContent=name;
-    // this.m.appendChild(this.name);
- 
     this.mask = document.createElement('div');
     this.mask.className = 'emojiMask';
     path.appendChild(this.mask);
