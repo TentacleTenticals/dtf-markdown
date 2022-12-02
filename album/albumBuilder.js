@@ -138,7 +138,7 @@ window.AlbumBuilder = class AlbumBuilder {
         }
       }
 
-      al.length > 0 ? document.querySelector(`div[class='comment_editable']`).innerText += `<album>${JSON.stringify(al)}</album>` : '';
+      al.length > 0 ? document.querySelector(`p[class='content_editable']`).innerText += `<album>${JSON.stringify(al)}</album>` : '';
       // this.main.remove();
     }
     this.form.appendChild(this.submit);
