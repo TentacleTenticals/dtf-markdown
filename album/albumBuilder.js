@@ -24,19 +24,14 @@ function urlEncoder(s){
 }
 
 let filter = /(<b>|<s>|::|<album>)([^]+?)(<\/b>|<\/s>|::|<\/album>)/gmi;
-
-// urlEncoder('`s^{{i}imgur}com{mrkD4VH}jpg')
-
-// alert(urlDecoder('https://i.imgur.com/mrkD4VH.jpg'))
-
-export class NewLine {
+class NewLine {
   constructor(path, addBefore){
     this.main=document.createElement('br');
     addBefore ? path.insertBefore(this.main, addBefore) : path.appendChild(this.main);
   }
 }
 
-export class AlbumBuilder {
+window.AlbumBuilder = class AlbumBuilder {
   constructor(path){
     if(document.getElementById('albumBuilder')) return;
     this.main=document.createElement('div');
@@ -150,7 +145,7 @@ export class AlbumBuilder {
   }
 }
 
-export class AlbumUrlAdd {
+class AlbumUrlAdd {
   constructor({path, addBefore, num, alb}){
     // alert(num)
     this.cont1=document.createElement('div');
@@ -278,7 +273,7 @@ export class AlbumUrlAdd {
   }
 }
 
-export class AlbumPreviewItem {
+class AlbumPreviewItem {
   constructor({path, id, url, spoiler}){
     if(!document.getElementById(id)){
       this.mask=document.createElement('div');
