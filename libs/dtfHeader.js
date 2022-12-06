@@ -22,6 +22,7 @@
       this.main.style=`
       display: flex;
       width: 100%;
+      background-color: rgb(0 0 0);
       `;
       path.parentNode.insertBefore(this.main, where);
     }
