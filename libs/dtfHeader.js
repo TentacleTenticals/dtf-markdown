@@ -25,4 +25,4 @@
       path.parentNode.insertBefore(this.main, where);
     }
   }
-}();
+})();
