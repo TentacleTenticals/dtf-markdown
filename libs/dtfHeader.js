@@ -13,7 +13,7 @@
 
 (function() {
 'use strict';
-  window.DtfHeader = class DtfHeader(){
+  window.DtfHeader = class DtfHeader{
     constructor(path, where){
       if(document.getElementById('Dtf-header')) return;
       this.main=document.createElement('div');
