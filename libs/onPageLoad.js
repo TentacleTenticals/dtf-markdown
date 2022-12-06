@@ -21,7 +21,7 @@
         if(args[0]){
           if(typeof args[0] === 'string'){
             if(args[0].match(/\[ Air \] Ready.*/)){
-              run();
+              run(func);
             }
           }
         }
