@@ -20,6 +20,7 @@
       this.main.className='Dtf-header';
       this.main.id='Dtf-header';
       this.main.style=`
+      display: flex;
       width: 100%;
       `;
       path.parentNode.insertBefore(this.main, where);
