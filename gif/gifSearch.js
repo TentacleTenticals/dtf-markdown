@@ -1,4 +1,4 @@
-function getToken(){
+function getToken(tokens){
 if(tokens.token) return;
 return fetch('https://api.gfycat.com/v1/oauth/token', {
     method: 'POST',
@@ -35,10 +35,10 @@ function checkCat(token, search){
 //   checkCat(res.access_token, 'craftygrotesquedanishswedishfarmdog').then(res => console.log('GIF', res))
 // })
 
-function searchTenor(search){
+function searchTenor(search, tokens){
   return fetch(`https://tenor.googleapis.com/v2/search?q=${search}&key=${tokens.tenorSecret}&client_key=my_test_app&limit=20`, {
     method: 'GET'
-  }).then(res => res.json())
+  }).then(res => res.json());
 }
 
 class GifSearch{
@@ -247,7 +247,7 @@ class GifSearch{
         this.video.src='';
         this.video.poster='';
         if(mode === 'Gfycat'){
-          getToken().then(res => {
+          getToken(tokens).then(res => {
             console.log(res)
             if(res) searchCat(res.access_token, e.target.value).then(s => {
               s.gfycats.forEach(e => {
@@ -257,7 +257,7 @@ class GifSearch{
           }).catch(err => console.log(err))
         }else
         if(mode === 'Tenor'){
-          searchTenor(e.target.value).then(s => {
+          searchTenor(e.target.value, tokens).then(s => {
             s.results.forEach(e => {
               new GifItem(this.list, e, mode);
             })
