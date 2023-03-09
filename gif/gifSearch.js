@@ -43,6 +43,7 @@ function searchTenor(search, tokens){
 
 class GifSearch{
   constructor(mode, path, tokens){
+    console.log('Tok', tokens);
     if(document.getElementById('dtf-gifSearcher')) return;
     class GifItem{
       constructor(path, item){
