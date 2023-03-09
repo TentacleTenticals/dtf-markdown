@@ -42,7 +42,7 @@ function searchTenor(search, tokens){
 }
 
 class GifSearch{
-  constructor(mode, path){
+  constructor(mode, path, tokens){
     if(document.getElementById('dtf-gifSearcher')) return;
     class GifItem{
       constructor(path, item){
