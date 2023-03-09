@@ -69,6 +69,7 @@ class Formatter {
 
 class MarkdownPanel {
   constructor(path, addBefore, tokens) {
+    console.log('TOKENS', tokens);
     function injector(s, e){
       if(!window.getSelection()) return;
       if(!window.getSelection().toString().length > 0) return;
