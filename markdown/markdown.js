@@ -68,7 +68,7 @@ class Formatter {
 }
 
 class MarkdownPanel {
-  constructor(path, addBefore) {
+  constructor(path, addBefore, tokens) {
     function injector(s, e){
       if(!window.getSelection()) return;
       if(!window.getSelection().toString().length > 0) return;
@@ -148,7 +148,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'GIF',
       onclick: () => {
-        new GifSearch('Default', document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new GifSearch('Default', document.querySelector(`div[class='comment-writing'] .thesis__panel`, tokens));
       }
     });
     this.bGif=new Button({
@@ -156,7 +156,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'Tenor',
       onclick: () => {
-        new GifSearch('Tenor', document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new GifSearch('Tenor', document.querySelector(`div[class='comment-writing'] .thesis__panel`, tokens));
       }
     });
     this.bLinkConverter=new Button({
