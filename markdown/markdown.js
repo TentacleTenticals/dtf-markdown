@@ -68,7 +68,7 @@ class Formatter {
 }
 
 class MarkdownPanel {
-  constructor(path, addBefore, tokens) {
+  constructor(path, addBefore) {
     console.log('TOKENS', tokens);
     function injector(s, e){
       if(!window.getSelection()) return;
@@ -149,7 +149,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'GIF',
       onclick: () => {
-        new GifSearch('Default', document.querySelector(`div[class='comment-writing'] .thesis__panel`), tokens);
+        new GifSearch('Default', document.querySelector(`div[class='comment-writing'] .thesis__panel`));
       }
     });
     this.bGif2=new Button({
@@ -157,7 +157,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'Tenor',
       onclick: () => {
-        new GifSearch('Tenor', document.querySelector(`div[class='comment-writing'] .thesis__panel`), tokens);
+        new GifSearch('Tenor', document.querySelector(`div[class='comment-writing'] .thesis__panel`));
       }
     });
     this.bLinkConverter=new Button({
