@@ -1,4 +1,4 @@
-export let gifSearch = `
+let gifSearch = `
 .gifSearcher .header {
   background-color: rgb(255 255 255);
   color: black;
