@@ -1,4 +1,4 @@
-let gifSearch = `
+let gifSearchCSS = `
 .gifSearcher .header {
   background-color: rgb(255 255 255);
   color: black;
