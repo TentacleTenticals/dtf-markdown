@@ -8,6 +8,11 @@ let mainCss = `
 
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@800&display=swap');
 
+.comment-form {
+  display: flex;
+  flex-direction: column;
+}
+
 .content_editable {
   outline: none;
   min-height: 100px;
