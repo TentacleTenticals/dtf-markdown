@@ -1,4 +1,4 @@
-let albumBuilder = `
+let albumBuilderCSS = `
 .dtf-albumBuilder .btn {
   background-image: repeating-linear-gradient(
     180deg,
