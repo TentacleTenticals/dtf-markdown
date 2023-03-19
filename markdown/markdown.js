@@ -1,92 +1,29 @@
-class Formatter {
-  constructor({ path, text }) {
-    function injector(s, e){
-      let t = {
-        s: window.getSelection().anchorNode.textContent.substring(0, window.getSelection().anchorOffset),
-        t: window.getSelection().anchorNode.textContent.substring(window.getSelection().anchorOffset, window.getSelection().focusOffset),
-        e: window.getSelection().anchorNode.textContent.substring(window.getSelection().focusOffset, window.getSelection().anchorNode.textContent.length)
-      }
-
-      if(window.getSelection().anchorNode.textContent.length === window.getSelection().anchorOffset){
-        window.getSelection().anchorNode.parentElement.innerText = `${s}${window.getSelection().anchorNode.textContent}${e}`;
-      }else
-      {
-        window.getSelection().anchorNode.parentElement.innerText = `${t.s}${s}${t.t}${e}${t.e}`;
-      }
-    }
-    
-    this.main=document.createElement('div');
-    this.main.className='formatter';
-    this.main.id='formatter';
-    this.main.style.top=`${text.getRangeAt(0).getBoundingClientRect().top-20}px`;
-    this.main.style.left=`${text.getRangeAt(0).getBoundingClientRect().left}px`;
-    this.main.tabindex=this.main.setAttribute('tabindex', '-1');
-    this.main.onblur=() => {
-      setTimeout(() => {
-        this.main.remove();
-      }, 100);
-    }
-    path.appendChild(this.main);
-    this.main.focus();
-
-    this.bSpoiler = document.createElement('button');
-    this.bSpoiler.className = 'formatter-button';
-    this.bSpoiler.innerText='Sp';
-    this.bSpoiler.onclick=() => {
-      injector('||', '||');
-      // text.removeAllRanges();
-      // document.selection.empty();
-    }
-    this.main.appendChild(this.bSpoiler);
-
-    this.bBold = document.createElement('button');
-    this.bBold.className = 'formatter-button';
-    this.bBold.innerText='B';
-    this.bBold.onclick=() => {
-      text.anchorNode.textContent = `${t.s}<b>${t.t}</b>${t.e}`
-
-      console.log(`${window.getSelection().anchorNode.textContent.substring(0, window.getSelection().anchorOffset)}<test>${window.getSelection().anchorNode.textContent.substring(window.getSelection().anchorOffset, window.getSelection().focusOffset)}</test>${window.getSelection().anchorNode.textContent.substring(window.getSelection().focusOffset, window.getSelection().anchorNode.textContent.length)}`)
-    }
-    this.main.appendChild(this.bBold);
-
-    this.bIdio = document.createElement('button');
-    this.bIdio.className = 'formatter-button';
-    this.bIdio.innerText='i';
-    this.bIdio.onclick=() => {
-      text.anchorNode.textContent = `${t.s}<i>${t.t}</i>${t.e}`
-    }
-    this.main.appendChild(this.bIdio);
-
-    this.bStrike = document.createElement('button');
-    this.bStrike.className = 'formatter-button';
-    this.bStrike.innerText='S';
-    this.bStrike.onclick=() => {
-      text.anchorNode.textContent = `${t.s}<s>${t.t}</s>${t.e}`
-    }
-    this.main.appendChild(this.bStrike);
-  }
-}
-
 class MarkdownPanel {
+  Selection(){
+    if(!window.getSelection().focusNode.isContentEditable && !window.getSelection().focusNode.parentNode.isContentEditable) return console.log('Wrong element', window.getSelection().focusNode);
+    // if(!window.getSelection()) return;
+    // if(!window.getSelection().toString().length > 0) return;
+    return {
+      s: window.getSelection().focusNode.textContent.substring(0, window.getSelection().anchorOffset),
+      t: window.getSelection().focusNode.textContent.substring(window.getSelection().anchorOffset, window.getSelection().focusOffset),
+      e: window.getSelection().focusNode.textContent.substring(window.getSelection().focusOffset, window.getSelection().focusNode.textContent.length),
+      target: window.getSelection().focusNode,
+      offset: window.getSelection().anchorOffset
+    }
+  }
+  Modify(s, e){
+    if(!this.Selection()) return;
+    let sel = this.Selection();
+
+    if(sel.target.textContent.length === sel.offset){
+      sel.target.textContent = `${s}${sel.target.textContent}${e}`;
+      // sel.selection.removeAllRanges();
+    }else{
+      sel.target.textContent = `${sel.s}${s}${sel.t}${e}${sel.e}`;
+      // sel.selection.removeAllRanges();
+    }
+  }
   constructor(path, addBefore) {
-    console.log('TOKENS', tokens);
-    function injector(s, e){
-      if(!window.getSelection()) return;
-      if(!window.getSelection().toString().length > 0) return;
-      let t = {
-      s: window.getSelection().anchorNode.textContent.substring(0, window.getSelection().anchorOffset),
-      t: window.getSelection().anchorNode.textContent.substring(window.getSelection().anchorOffset, window.getSelection().focusOffset),
-      e: window.getSelection().anchorNode.textContent.substring(window.getSelection().focusOffset, window.getSelection().anchorNode.textContent.length)
-      }
-
-      if(window.getSelection().anchorNode.textContent.length === window.getSelection().anchorOffset){
-        window.getSelection().anchorNode.parentElement.innerText = `${s}${window.getSelection().anchorNode.textContent}${e}`;
-      }else
-      {
-        window.getSelection().anchorNode.parentElement.innerText = `${t.s}${s}${t.t}${e}${t.e}`;
-      }
-    };
-
     this.main=new Div({
       path: path,
       cName: 'dtf-markdownPanel',
@@ -96,39 +33,39 @@ class MarkdownPanel {
       rtn: []
     });
 
-    this.bSpoiler=new Button({
+    if(mainCfg['markdown panel']['buttons']['spoiler']) this.bSpoiler=new Button({
       path: this.main,
       cName: 'button',
       text: 'Sp',
       onclick: () => {
-        injector('||', '||');
+        this.Modify('||', '||');
       }
     });
-    this.bBold=new Button({
+    if(mainCfg['markdown panel']['buttons']['<b>']) this.bBold=new Button({
       path: this.main,
       cName: 'button',
       text: 'B',
       onclick: () => {
-        injector('<b>', '</b>');
+        this.Modify('<b>', '</b>');
       }
     });
-    this.bIdio=new Button({
+    if(mainCfg['markdown panel']['buttons']['<i>']) this.bIdio=new Button({
       path: this.main,
       cName: 'button',
       text: 'i',
       onclick: () => {
-        injector('<i>', '</i>');
+        this.Modify('<i>', '</i>');
       }
     });
-    this.bStrike=new Button({
+    if(mainCfg['markdown panel']['buttons']['<s>']) this.bStrike=new Button({
       path: this.main,
       cName: 'button',
       text: 'S',
       onclick: () => {
-        injector('<s>', '</s>');
+        this.Modify('<s>', '</s>');
       }
     });
-    this.bAlbum=new Button({
+    if(mainCfg['markdown panel']['buttons']['album']) this.bAlbum=new Button({
       path: this.main,
       cName: 'button',
       text: '🖼️',
@@ -136,7 +73,7 @@ class MarkdownPanel {
         new AlbumBuilder(document.querySelector(`div[class='comment-writing'] .thesis__panel`));
       }
     });
-    this.bAlbum=new Button({
+    if(mainCfg['markdown panel']['buttons']['emoji']) this.bAlbum=new Button({
       path: this.main,
       cName: 'button',
       text: '😉',
@@ -144,23 +81,31 @@ class MarkdownPanel {
         new EmojiPicker(document.querySelector(`div[class='comment-writing'] .thesis__panel`));
       }
     });
-    this.bGif=new Button({
+    if(mainCfg['markdown panel']['buttons']['gif']['slots']['a']) this.bGif=new Button({
       path: this.main,
       cName: 'button',
-      text: 'GIF',
+      text: mainCfg['markdown panel']['buttons']['gif']['modes']['a'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['a'],
       onclick: () => {
-        new GifSearch('Default', document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['a'], document.querySelector(`div[class='comment-writing'] .thesis__panel`));
       }
     });
-    this.bGif2=new Button({
+    if(mainCfg['markdown panel']['buttons']['gif']['slots']['b']) this.bGif2=new Button({
       path: this.main,
       cName: 'button',
-      text: 'Tenor',
+      text: mainCfg['markdown panel']['buttons']['gif']['modes']['b'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['b'],
       onclick: () => {
-        new GifSearch('Tenor', document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['b'], document.querySelector(`div[class='comment-writing'] .thesis__panel`));
       }
     });
-    this.bLinkConverter=new Button({
+    if(mainCfg['markdown panel']['buttons']['gif']['slots']['c']) this.bGif3=new Button({
+      path: this.main,
+      cName: 'button',
+      text: mainCfg['markdown panel']['buttons']['gif']['modes']['c'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['c'],
+      onclick: () => {
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['c'], document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+      }
+    });
+    if(mainCfg['markdown panel']['buttons']['lk']) this.bLinkConverter=new Button({
       path: this.main,
       cName: 'button',
       text: 'LK',
@@ -168,17 +113,13 @@ class MarkdownPanel {
         new LinkConverter(document.querySelector(`div[class='comment-writing'] .thesis__panel`));
       }
     });
-  }
-}
-
-function checkSelection() {
-  // console.log(window.getSelection())
-  if (window.getSelection()) {
-    if(window.getSelection().toString().length > 0 && !document.getElementById('formatter')){
-      new Formatter({
-        text: window.getSelection(),
-        path: document.body
-      })
-    }
+    new Button({
+      path: this.main,
+      cName: 'button',
+      text: 'Preview',
+      onclick: () => {
+        new CommentPreviewer(document.querySelector(`.comment-writing .thesis__panel`), document.querySelector(`.comment-writing .content_editable`).textContent.trim());
+      }
+    });
   }
 };
