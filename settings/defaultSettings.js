@@ -1,52 +1,67 @@
 let defaultSettings = {
-  'what to show in messages': {
-    'show emojis': true,
-    'show spoilers': true,
-    'show albums': true,
-    'show <b>': true,
-    'show <i>': true,
-    'show <s>': true
-  },
   'attachments': {
-    'emoji': {
-      'size': 30
+    'comments': {
+      'search': {
+        'obs': true,
+        'onLoad': true
+      },
+      'show': {
+        'emojis': true,
+        'emojiGifs': true,
+        'stickers': true,
+        'stickerGifs': true,
+        'gifs': true,
+        'images': true,
+        'albums': true,
+        'spoilers': true,
+        '<b>': true,
+        '<i>': true,
+        '<s>': true
+      }
     },
-    'emoji gif': {
-      'size': 30
-    },
-    'sticker': {
-      'size': 120
+    'size': {
+      'emoji': 30,
+      'emoji gif': 30,
+      'sticker': 120,
+      'stickerGif': 120,
+      'gif': 150,
+      'image': 150
     },
     'gif': {
-      'size': 150
-    },
-    'image': {
-      'size': 150
+      'show gif ico': true,
+      'autoplay': false,
+      'mute': true,
+      'pIp': false
     }
   },
-  'emoji groups to show': (() => {
-    let groups = {};
-    for(let g in emoji){
-      groups[g] = true;
-    }
-    return groups;
-  })(),
-  'album settings': {
+  'album': {
+    'album': {
+      'background': '#000000',
+      'margin': '',
+      'padding': ''
+    },
     'list': {
-      'list height': 217,
-      'list background color': '#ffffff',
+      'height': 217,
+      'background': '#000000',
     },
     'items': {
-      'items in column': 3,
-      'items size': 100,
-      'items padding': 3
+      'in column': 3,
+      'size': 100,
+      'padding': 3
+    },
+    'previewer': {
+      'zoom power': 0.25
     },
 
     'album underborder color': '#6ed1e7',
-    'preview zoom power': 0.25,
+    // 'preview zoom power': 0.25,
   },
-  'album builder settings': {
-    'allow album items upload': true
+  'album builder': {
+    'allow items upload': true,
+    'tokens': {
+      'Imgur': {},
+      'ImgBB': {}
+    }
   },
   'spoiler settings': {
     'closed spoiler color': '#000000',
@@ -64,7 +79,7 @@ let defaultSettings = {
     'Imgur': false,
     'ImgBB': [{token: 'test'}]
   },
-  'markdown panel settings': {
+  'markdown panel': {
     'buttons': {
       'spoiler': true,
       '<b>': true,
@@ -72,26 +87,54 @@ let defaultSettings = {
       '<s>': true,
       'album': true,
       'emoji': true,
-      'gif slot 1': true,
-      'gif slot 2': true,
       'lk': true,
-    },
-    'gif slot 1': 'Default',
-    'gif slot 2': 'Gfycat'
-  },
-  'gif searches': {
-    'Gfycat': {},
-    'Tenor': {}
-  },
-  'gif groups to show': (() => {
-    let groups = {};
-    for(let g in gifs){
-      groups[g] = true;
+      'comment preview': true,
+      'gif': {
+        'slots': {
+          'a': true,
+          'b': true,
+          'c': false
+        },
+        'modes': {
+          'a': 'Default',
+          'b': 'Gfycat',
+          'c': 'Tenor'
+        }
+      }
     }
-    return groups;
-  })(),
+  },
+  'emoji picker': {
+    'default mode': 'Emoji',
+    'close after pick': true,
+    'groups to show': (() => {
+      let groups = {};
+      for(let g in emojisDB){
+        groups[g] = true;
+      }
+      return groups;
+    })()
+  },
+  'gif picker': {
+    'default mode': 'gif',
+    'close after pick': true,
+    'groups to show': (() => {
+      let groups = {};
+      for(let g in gifsDB){
+        groups[g] = true;
+      }
+      return groups;
+    })(),
+    'tokens': {
+      'Gfycat': {
+        'clientID': '',
+        'clientSecret': ''
+      },
+      'Tenor': {}
+    }
+  },
   'scriptInfo': {
     scriptName: 'DTF markdown',
+    scriptId: 'dtf-markdown',
     storeName: 'DTF-markdown',
     storeDesc: 'Скрипт для расширения возможностей, десу!'
   }
