@@ -1,4 +1,4 @@
-let gifs = {
+let gifsDB = {
   'dtf': {
     'porv': {
       name: 'porv',
