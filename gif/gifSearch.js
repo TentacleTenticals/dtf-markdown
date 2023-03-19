@@ -1,13 +1,14 @@
-function getToken(){
-if(tokens.token) return;
+function getToken(tokens){
+  if(!tokens) return;
+// if(tokens.token) return;
 return fetch('https://api.gfycat.com/v1/oauth/token', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: JSON.stringify({
-      client_id: tokens.catID,
-      client_secret: tokens.catSecret,
+      client_id: tokens.clientID,
+      client_secret: tokens.clientSecret,
       grant_type: "client_credentials"})
 }).then(res => {
   return res.json();
@@ -35,175 +36,192 @@ function checkCat(token, search){
 //   checkCat(res.access_token, 'craftygrotesquedanishswedishfarmdog').then(res => console.log('GIF', res))
 // })
 
-function searchTenor(search){
-  return fetch(`https://tenor.googleapis.com/v2/search?q=${search}&key=${tokens.tenorSecret}&client_key=my_test_app&limit=20`, {
+function searchTenor(tokens, search){
+  return fetch(`https://tenor.googleapis.com/v2/search?q=${search}&key=${tokens.clientSecret}&client_key=my_test_app&limit=20`, {
     method: 'GET'
   }).then(res => res.json());
 }
 
 class GifSearch{
-  constructor(mode, path){
-    console.log('Tok', tokens);
-    if(document.getElementById('dtf-gifSearcher')) return;
-    class GifItem{
-      constructor(path, item){
-        this.mask=new Div({
-          path: path,
-          cName: 'mask',
-          tab: '-1',
-          rtn: [],
-          onmouseenter: () => {
-            this.mask.focus();
-          },
-          onfocus: (e) => {
-            this.previewType=this.mask.closest('.gifSearcher').children[1].children[2];
-            this.preview=this.mask.closest('.gifSearcher').children[2].children[0];
-            if(mode === 'Gfycat'){
-              if(this.previewType.value.match(/^gif$|^stickerGif$|^emojiGif$|^gifUrl$/)){
-                this.preview.src=item.miniUrl;
-                this.preview.poster=item.posterUrl;
-              }else{
-                this.preview.src='';
-                this.preview.poster=item.posterUrl;
-              }
-            }
-            if(mode === 'Tenor'){
-              console.log('Preview', this.previewType)
-              if(this.previewType.value.match(/^gif$|^stickerGif$|^emojiGif$|^gifUrl$/)){
-                this.preview.src=item.media_formats.tinywebm.url;
-                this.preview.poster=item.media_formats.miniPosterUrl;
-              }else{
-                this.preview.src='';
-                this.preview.poster=item.media_formats.gifpreview.url;
-              }
-            }
-          },
-          onclick: () => {
-            console.log(item);
-            document.querySelector(
-              `.content_editable`
-            ).textContent += (() => {
-              if(mode === 'Gfycat'){
-                console.log('Picked', item)
-                switch(this.mask.closest('.gifSearcher').children[1].children[2].value){
-                  case 'gif': return `:g:${urlCoder.decoder(item.miniUrl)}:g:`;
-                  case 'image': `:i:${urlCoder.decoder(item.posterUrl)}:i:`;
-                  case 'emoji': return `:e:${urlCoder.decoder(item.posterUrl)}:e:`;
-                  case 'sticker': return `:s:${urlCoder.decoder(item.posterUrl)}:s:`;
-                  case 'emoji Gif': return `:eg:${urlCoder.decoder(item.miniUrl)}:eg:`;
-                  case 'sticker Gif': return `:sg:${urlCoder.decoder(item.miniUrl)}:sg:`;
-                  case 'gif Url': return item.gifUrl;
-                  case 'image Url': return item.posterUrl;
-                  case 'video Url': return item.miniUrl;
-                }
-              }else
-              if(mode === 'Tenor'){
-                console.log('URL', item.media_formats.tinywebm.url)
-                switch(this.mask.closest('.gifSearcher').children[1].children[2].value){
-                  case 'gif': return `:g:${urlCoder.decoder(item.media_formats.tinywebm.url)}:g:`;
-                  case 'image': `:i:${urlCoder.decoder(item.media_formats.gifpreview.url)}:i:`;
-                  case 'emoji': return `:e:${urlCoder.decoder(item.media_formats.gifpreview.url)}:e:`;
-                  case 'sticker': return `:s:${urlCoder.decoder(item.media_formats.gifpreview.url)}:s:`;
-                  case 'emoji Gif': return `:eg:${urlCoder.decoder(item.media_formats.tinywebm.url)}:eg:`;
-                  case 'sticker Gif': return `:sg:${urlCoder.decoder(item.media_formats.tinywebm.url)}:sg:`;
-                  case 'gif Url': return item.media_formats.gif.url;
-                  case 'image Url': return item.media_formats.gifpreview.url;
-                  case 'video Url': return item.media_formats.tinywebm.url;
-                }
-              }
-            })()
-          }
-        });
-
-        this.img=new Image({
-          path: this.mask,
-          url: mode === 'Gfycat' ? item.miniPosterUrl : item.media_formats.gifpreview.url
-        });
-      }
+  Selection(){
+    if(!window.getSelection().focusNode.isContentEditable && !window.getSelection().focusNode.parentNode.isContentEditable) return console.log('Wrong element', window.getSelection().focusNode);
+    this.sel = {
+      s: window.getSelection().focusNode.textContent.substring(0, window.getSelection().anchorOffset),
+      t: window.getSelection().focusNode.textContent.substring(window.getSelection().anchorOffset, window.getSelection().focusOffset),
+      e: window.getSelection().focusNode.textContent.substring(window.getSelection().focusOffset, window.getSelection().focusNode.textContent.length),
+      target: window.getSelection().focusNode,
+      offset: window.getSelection().anchorOffset
     }
+  }
+  Modify(s){
+    this.Selection();
+    if(!this.sel) return;
 
-    class GifGroup {
-      constructor({path, groupName}){
-        if(document.getElementById(`gifGroup-${groupName}`)) return document.getElementById(`gifGroup-${groupName}`).children[1];
-        this.main=new Div({
-          path: path,
-          cName: 'gifGroup',
-          id: `gifGroup-${groupName}`,
-          rtn: []
-        });
+    if(this.sel.target.textContent.length === this.sel.offset){
+      this.sel.target.textContent = `${this.sel.target.textContent}${s}`;
+    }else{
+      this.sel.target.textContent = `${this.sel.s}${s}${this.sel.t}${this.sel.e}`;
+    }
+    if(mainCfg['gif picker']['close after pick']) this.main.remove();
+  }
+  Gif({path, item, name}){
+    let mask=new Div({
+      path: path,
+      cName: 'mask',
+      rtn: [],
+      tab: '-1',
+      onmouseenter: () => {
+        mask.focus();
+      },
+      onfocus: (e) => {
+        this.previewType=mask.closest('.gifSearcher').children[1].children[2];
+        this.preview=mask.closest('.gifSearcher').children[2].children[0];
+        // console.log(this.searchType)
+        if(this.previewType.value.match(/^(gif|sticker GIF|emoji GIF|gif URL|video URL)$/)){
+          this.preview.src=`https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`;
+          this.preview.poster=`https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
+        }else{
+          this.preview.src='';
+          this.preview.poster=`https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
+        }
+      },
+      onclick: () => {
+        console.log(item);
+        let res = (() => {
+          switch(this.previewType.value){
+          case 'gif': return `:g:${item.group}.${item.name}:g:`;
+          case 'image': return `:i:${item.group}.${item.name}:i:`;
+          case 'emoji': return `:e:${item.group}.${item.name}:e:`;
+          case 'sticker': return `:s:${item.group}.${item.name}:s:`;
+          case 'emoji GIF': return `:eg:${item.group}.${item.name}:eg:`;
+          case 'sticker GIF': return `:sg:${item.group}.${item.name}:sg:`;
+          case 'gif URL': return `https://thumbs.gfycat.com/${item.gifId}-size_restricted.gif`;
+          case 'image URL': return `https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
+          case 'video URL': return `https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`;
+        };
+        })();
+        this.Modify(res);
+      }
+    });
 
-        this.groupName=new Div({
-          path: this.main,
-          cName: 'groupHeader',
-          text: groupName,
-          onclick: () => {
-            this.main.classList.toggle('hidden');
+    new Video({
+      path: mask,
+      cName: 'gif',
+      name: item.name,
+      src: `https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`,
+      poster: `https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`,
+      muted: true
+    });
+  };
+  GifItem(path, item, mode){
+    let mask=new Div({
+      path: path,
+      cName: 'mask',
+      tab: '-1',
+      rtn: [],
+      onmouseenter: () => {
+        mask.focus();
+      },
+      onfocus: (e) => {
+        this.previewType=mask.closest('.gifSearcher').children[1].children[2];
+        this.preview=mask.closest('.gifSearcher').children[2].children[0];
+        if(mode === 'Gfycat'){
+          if(this.previewType.value.match(/^(gif|sticker GIF|emoji GIF|gif URL|video URL)$/)){
+            this.preview.src=item.miniUrl;
+            this.preview.poster=item.posterUrl;
+          }else{
+            this.preview.src='';
+            this.preview.poster=item.posterUrl;
           }
-        });
-
-        this.list=new Div({
-          path: this.main,
-          cName: 'gifList',
-          rtn: []
-        });
-
-        return this.list;
-        
-      }
-    };
-    class Gif{
-      constructor({path, item, name}){
-        this.mask=new Div({
-          path: path,
-          cName: 'mask',
-          rtn: [],
-          tab: '-1',
-          onmouseenter: () => {
-            this.mask.focus();
-          },
-          onfocus: (e) => {
-            this.previewType=this.mask.closest('.gifSearcher').children[1].children[2];
-            this.preview=this.mask.closest('.gifSearcher').children[2].children[0];
-            // console.log(this.searchType)
-            if(this.previewType.value.match(/^(gif|sticker Gif|emoji Gif|gif Url|video Url)$/)){
-              this.preview.src=`https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`;
-              this.preview.poster=`https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
-            }else{
-              this.preview.src='';
-              this.preview.poster=`https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
+        }else
+        if(mode === 'Tenor'){
+          console.log('Preview', this.previewType);
+          if(this.previewType.value.match(/^(gif|sticker GIF|emoji GIF|gif URL|video URL)$/)){
+            this.preview.src=item.media_formats.tinywebm.url;
+            this.preview.poster=item.media_formats.miniPosterUrl;
+          }else{
+            this.preview.src='';
+            this.preview.poster=item.media_formats.gifpreview.url;
+          }
+        }
+      },
+      onclick: () => {
+        console.log(item);
+        let res = (() => {
+          if(mode === 'Gfycat'){
+            console.log('Picked', item)
+            switch(mask.closest('.gifSearcher').children[1].children[2].value){
+              case 'gif': return `:g:${urlCoder.decoder(item.miniUrl)}:g:`;
+              case 'image': return `:i:${urlCoder.decoder(item.posterUrl)}:i:`;
+              case 'emoji': return `:e:${urlCoder.decoder(item.posterUrl)}:e:`;
+              case 'sticker': return `:s:${urlCoder.decoder(item.posterUrl)}:s:`;
+              case 'emoji GIF': return `:eg:${urlCoder.decoder(item.miniUrl)}:eg:`;
+              case 'sticker GIF': return `:sg:${urlCoder.decoder(item.miniUrl)}:sg:`;
+              case 'gif URL': return item.gifUrl;
+              case 'image URL': return item.posterUrl;
+              case 'video URL': return item.miniUrl;
             }
-          },
-          onclick: () => {
-            console.log(item);
-            document.querySelector(
-              `.content_editable`
-            ).textContent += (() => {
-                switch(this.mask.closest('.gifSearcher').children[1].children[2].value){
-                  case 'gif': return `:g:${item.id}:g:`;
-                  case 'image': `:i:${item.id}:i:`;
-                  case 'emoji': return `:e:${item.id}:e:`;
-                  case 'sticker': return `:s:${item.id}:s:`;
-                  case 'emoji Gif': return `:eg:${item.id}:eg:`;
-                  case 'sticker Gif': return `:sg:${item.id}:sg:`;
-                  case 'gif Url': return `https://thumbs.gfycat.com/${item.gifId}-size_restricted.gif`;
-                  case 'image Url': return `https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
-                  case 'video Url': return `https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`;
-                };
-            })();
-          },
-        });
-
-        this.gif=new Video({
-          path: this.mask,
-          cName: 'gif',
-          name: item.name,
-          src: `https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`,
-          poster: `https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`,
-          pIp: true,
-          muted: true
-        });
+          }else
+          if(mode === 'Tenor'){
+            console.log('URL', item.media_formats.tinywebm.url)
+            switch(mask.closest('.gifSearcher').children[1].children[2].value){
+              case 'gif': return `:g:${urlCoder.decoder(item.media_formats.tinywebm.url)}:g:`;
+              case 'image': return `:i:${urlCoder.decoder(item.media_formats.gifpreview.url)}:i:`;
+              case 'emoji': return `:e:${urlCoder.decoder(item.media_formats.gifpreview.url)}:e:`;
+              case 'sticker': return `:s:${urlCoder.decoder(item.media_formats.gifpreview.url)}:s:`;
+              case 'emoji GIF': return `:eg:${urlCoder.decoder(item.media_formats.tinywebm.url)}:eg:`;
+              case 'sticker GIF': return `:sg:${urlCoder.decoder(item.media_formats.tinywebm.url)}:sg:`;
+              case 'gif URL': return item.media_formats.gif.url;
+              case 'image URL': return item.media_formats.gifpreview.url;
+              case 'video URL': return item.media_formats.tinywebm.url;
+            }
+          }
+          return
+        })();
+        this.Modify(res);
       }
-    };
+    });
+
+    new Image({
+      path: mask,
+      url: (() => {
+        if(mode === 'Gfycat') return item.miniPosterUrl;
+        else
+        if(mode === 'Tenor') return item.media_formats.gifpreview.url;
+      })()
+    });
+  }
+  GifGroup({path, groupName}){
+      if(document.getElementById(`gifGroup-${groupName}`)) return document.getElementById(`gifGroup-${groupName}`).children[1];
+      let main=new Div({
+        path: path,
+        cName: 'gifGroup',
+        id: `gifGroup-${groupName}`,
+        rtn: []
+      });
+
+      this.groupName=new Div({
+        path: main,
+        cName: 'groupHeader',
+        text: groupName,
+        onclick: () => {
+          main.classList.toggle('hidden');
+        }
+      });
+
+      let list=new Div({
+        path: main,
+        cName: 'gifList',
+        rtn: []
+      });
+
+      return list;
+  };
+  constructor(mode, path){
+    if(document.getElementById('dtf-gifSearcher')) return;
+    this.Selection();
+    // this.selection = selection;
+    // console.log('GIF', this.Inject())
 
     this.main=new Div({
       path: path,
@@ -248,19 +266,19 @@ class GifSearch{
         this.video.src='';
         this.video.poster='';
         if(mode === 'Gfycat'){
-          getToken().then(res => {
+          getToken(mainCfg['gif picker']['tokens']['Gfycat']).then(res => {
             console.log(res)
             if(res) searchCat(res.access_token, e.target.value).then(s => {
               s.gfycats.forEach(e => {
-                new GifItem(this.list, e, mode);
+                this.GifItem(this.list, e, mode);
               })
             }).catch(err => console.log(err))
           }).catch(err => console.log(err))
         }else
         if(mode === 'Tenor'){
-          searchTenor(e.target.value).then(s => {
+          searchTenor(mainCfg['gif picker']['tokens']['Tenor'], e.target.value).then(s => {
             s.results.forEach(e => {
-              new GifItem(this.list, e, mode);
+              this.GifItem(this.list, e, mode);
             })
           }).catch(err => console.log(err))
         }
@@ -282,14 +300,15 @@ class GifSearch{
         if(e.target.value === 'Default'){
           this.list.className='list default';
 
-          for(let g in gifs){
+          for(let g in gifsDB){
+            if(!mainCfg['gif picker']['groups to show'][g]) continue;
             this.group=new GifGroup({
               path: this.list,
               groupName: g
             });
-            for(let item in gifs[g]){
-              new Gif({
-                item: gifs[g][item],
+            for(let item in gifsDB[g]){
+              this.Gif({
+                item: gifsDB[g][item],
                 path: this.group
               });
             }
@@ -303,7 +322,8 @@ class GifSearch{
     this.previewType=new Select({
       path: this.mainForm,
       name: 'gifMode',
-      value: 'gif',
+      value: mainCfg['gif picker']['default mode'],
+      rtn: [],
       onchange: (e) => {
         this.video.className=e.target.value;
       },
@@ -323,19 +343,19 @@ class GifSearch{
         this.gifs=new Optgroup({
           path: path,
           label: 'Emojis',
-          options: ['emoji', 'emoji Gif']
+          options: ['emoji', 'emoji GIF']
         });
 
         this.gifs=new Optgroup({
           path: path,
           label: 'Stickers',
-          options: ['sticker', 'sticker Gif']
+          options: ['sticker', 'sticker GIF']
         });
 
         this.gifs=new Optgroup({
           path: path,
           label: 'URLs',
-          options: ['gif Url', 'image Url', 'video Url']
+          options: ['gif URL', 'image URL', 'video URL']
         });
       }
     });
@@ -356,7 +376,6 @@ class GifSearch{
       autoplay: true,
       loop: true,
       mute: true,
-      pIp: true,
       rtn: []
     });
 
@@ -367,14 +386,15 @@ class GifSearch{
       func: (list) => {
         if(mode === 'Default'){
           list.className='list default';
-          for(let g in gifs){
-            this.group=new GifGroup({
+          for(let g in gifsDB){
+            if(!mainCfg['gif picker']['groups to show'][g]) continue;
+            this.group=this.GifGroup({
               path: list,
               groupName: g
             });
-            for(let item in gifs[g]){
-              new Gif({
-                item: gifs[g][item],
+            for(let item in gifsDB[g]){
+              this.Gif({
+                item: gifsDB[g][item],
                 path: this.group
               });
             }
