@@ -1,4 +1,4 @@
-let gifSearchCSS = `
+let gifPickerCSS = `
 .gifSearcher .header {
   background-color: rgb(255 255 255);
   color: black;
@@ -7,7 +7,7 @@ let gifSearchCSS = `
   font-weight: 600;
   padding: 2px 0px 1px 0px;
   line-height: 14px;
-} */
+}
 
 .gifSearcher form {
   display: flex;
