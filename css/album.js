@@ -1,4 +1,4 @@
-let albumCss = (cfg) => {
+let albumCSS = (cfg) => {
   return `
 .album:is(:not(.preview), .preview) {
   background: black;
@@ -92,26 +92,30 @@ let albumCss = (cfg) => {
   position: relative;
   box-shadow: 0px 0px 1px 1px rgb(185 0 87);
 }
-.album:is(:not(.preview), .preview) .list {
+.album .list {
   display: grid;
-  grid-template-columns: repeat(3, calc(${cfg['album settings']['items']['items size']}px + ${cfg['album settings']['items']['items padding']}px * 2));
+  background-color: ${cfg['album']['list']['background']};
+  height: 105px;
+  grid-template-columns: repeat(3, calc(${cfg['album']['items']['size']}px + ${cfg['album']['items']['padding']}px * 2));
   padding: 5px 6px 5px 6px;
   gap: 5px 10px;
+  scroll-snap-type: y mandatory;
   overflow-y: auto;
 }
 .album:is(:not(.preview)) .list {
-  grid-template-columns: repeat(4, calc(${cfg['album settings']['items']['items size']}px + ${cfg['album settings']['items']['items padding']}px * 2));
+  grid-template-columns: repeat(4, calc(${cfg['album']['items']['size']}px + ${cfg['album']['items']['padding']}px * 2));
 }
 
 .album:is(:not(.preview), .preview) :is(.mask, .mask.spoiler) {
   flex-direction: column;
-  width: ${cfg['album settings']['items']['items size']}px;
-  height: ${cfg['album settings']['items']['items size']}px;
+  width: ${cfg['album']['items']['size']}px;
+  height: ${cfg['album']['items']['size']}px;
   display: flex;
   background: rgb(0, 0, 0);
   /* border-radius: 3px; */
-  padding: ${cfg['album settings']['items']['items padding']}px;
+  padding: ${cfg['album']['items']['padding']}px;
   box-shadow: 0px 0px 2px 1px rgb(225 71 152);
+  scroll-snap-align: center;
   cursor: pointer;
 }
 .album:is(:not(.preview), .preview) .mask.spoiler img {
