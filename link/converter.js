@@ -56,12 +56,12 @@ class LinkConverter{
         if(e.target.value.match(/http(s):\/\/.+/) && e.target.getAttribute('added') === e.target.value && e.code === 'Enter'){
           document.querySelector(`.content_editable`).textContent += (() => {
             switch(this.type.value){
-              case 'gif': return `:g:${urlDecoder(e.target.value)}:g:`;
-              case 'image': `:i:${urlDecoder(e.target.value)}:i:`;
-              case 'emoji': return `:e:${urlDecoder(e.target.value)}:e:`;
-              case 'sticker': return `:s:${urlDecoder(e.target.value)}:s:`;
-              case 'emojiGif': return `:eg:${urlDecoder(e.target.value)}:eg:`;
-              case 'stickerGif': return `:sg:${urlDecoder(e.target.value)}:sg:`;
+              case 'gif': return `:g:${urlCoder.decoder(e.target.value)}:g:`;
+              case 'image': `:i:${urlCoder.decoder(e.target.value)}:i:`;
+              case 'emoji': return `:e:${urlCoder.decoder(e.target.value)}:e:`;
+              case 'sticker': return `:s:${urlCoder.decoder(e.target.value)}:s:`;
+              case 'emojiGif': return `:eg:${urlCoder.decoder(e.target.value)}:eg:`;
+              case 'stickerGif': return `:sg:${urlCoder.decoder(e.target.value)}:sg:`;
               case 'gifUrl': return e.target.value;
               case 'imageUrl': return e.target.value;
             }
