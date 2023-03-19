@@ -1,10 +1,37 @@
-let attachments = (cfg) => {
+let attachmentsCSS = (cfg) => {
   return `
+.dtf-comment.text {
+  display: inline;
+  padding: unset;
+  margin: unset;
+}
+.dtf-attach.spoiler {
+  display: inline;
+}
+.dtf-attach.spoiler:not(.opened) .dtf-comment.text {
+  background-color: rgb(0 0 0);
+  border-radius: 3px;
+}
+.dtf-attach.spoiler:not(.opened) .dtf-attach.emoji img {
+  filter: blur(10px);
+}
+
+.dtf-commentText {
+  display: inline-flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 5px 5px;
+  /* display: inline; */
+  margin: unset;
+  padding: unset;
+}
+
 .dtf-attach.gif {
-  max-width: ${cfg['attachments']['gif']['size']}px;
-  max-height: ${cfg['attachments']['gif']['size']}px;
   display: inline-flex;
   position: relative;
+  max-width: ${cfg['attachments']['size']['gif']}px;
+  max-height: ${cfg['attachments']['size']['gif']}px;
   box-shadow: 0px 0px 3px 1px rgb(0 0 0);
   cursor: pointer;
 }
@@ -15,10 +42,10 @@ let attachments = (cfg) => {
 }
 
 .dtf-attach.emoji {
-  max-width: ${cfg['attachments']['emoji']['size']}px;
-  max-height: ${cfg['attachments']['emoji']['size']}px;
   display: inline-flex;
   position: relative;
+  max-width: ${cfg['attachments']['size']['emoji']}px;
+  max-height: ${cfg['attachments']['size']['emoji']}px;
   top: 8px;
   margin-top: -8px;
   /* box-shadow: 0px 0px 3px 1px rgb(0 0 0); */
@@ -30,10 +57,10 @@ let attachments = (cfg) => {
 }
 
 .dtf-attach.emojiGif {
-  max-width: ${cfg['attachments']['emoji gif']['size']}px;
-  height: ${cfg['attachments']['emoji gif']['size']}px;
   display: inline-flex;
   position: relative;
+  max-width: ${cfg['attachments']['size']['emoji gif']}px;
+  height: ${cfg['attachments']['size']['emoji gif']}px;
   top: 8px;
   margin-top: -8px;
   /* box-shadow: 0px 0px 3px 1px rgb(0 0 0); */
@@ -46,10 +73,10 @@ let attachments = (cfg) => {
 }
 
 .dtf-attach.sticker {
-  max-width: ${cfg['attachments']['sticker']['size']}px;
-  max-height: ${cfg['attachments']['sticker']['size']}px;
   display: inline-flex;
   position: relative;
+  max-width: ${cfg['attachments']['size']['sticker']}px;
+  max-height: ${cfg['attachments']['size']['sticker']}px;
   box-shadow: 0px 0px 3px 1px rgb(0 0 0);
 }
 .dtf-attach.sticker img {
@@ -58,11 +85,24 @@ let attachments = (cfg) => {
   margin: auto;
 }
 
-.dtf-attach.image {
-  max-width: ${cfg['attachments']['image']['size']}px;
-  max-height: ${cfg['attachments']['image']['size']}px;
+.dtf-attach.stickerGif {
   display: inline-flex;
   position: relative;
+  max-width: ${cfg['attachments']['size']['stickerGif']}px;
+  max-height: ${cfg['attachments']['size']['stickerGif']}px;
+  box-shadow: 0px 0px 3px 1px rgb(0 0 0);
+}
+.dtf-attach.stickerGif video {
+  max-width: inherit;
+  max-height: inherit;
+  margin: auto;
+}
+
+.dtf-attach.image {
+  display: inline-flex;
+  position: relative;
+  max-width: ${cfg['attachments']['size']['image']}px;
+  max-height: ${cfg['attachments']['size']['image']}px;
   box-shadow: 0px 0px 3px 1px rgb(0 0 0);
 }
 .dtf-attach.image img {
@@ -112,7 +152,7 @@ let attachments = (cfg) => {
   background-color: rgb(255 0 0);
 }
 .dtf-attach.gif::after {
-  display: block;
+  display: ${cfg['attachments']['gif']['show gif ico'] ? 'block' : 'none'};
   content: 'GIF';
   position: absolute;
   background-color: rgb(0 0 0);
@@ -124,5 +164,5 @@ let attachments = (cfg) => {
   border-radius: 3px;
   opacity: 0.5;
   box-shadow: 0px 0px 3px 0px rgb(255 255 255);
-}`
+}`;
 };
