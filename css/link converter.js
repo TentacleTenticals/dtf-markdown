@@ -1,4 +1,4 @@
-let linkConverter = `
+let linkConverterCSS = `
 .linkConverter form {
   display: flex;
   flex-direction: row;
