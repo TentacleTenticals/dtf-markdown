@@ -53,6 +53,7 @@ class AlbumBuilder {
       value: 'Create album',
       style: 'width:100%',
       onclick: () => {
+        console.log('Click')
         let al = [];
         for(let i = 0, arr = document.querySelectorAll(`input[class='input url']`); i < arr.length; i++){
           if(arr[i].classList.value.match(/url/)){
@@ -63,7 +64,7 @@ class AlbumBuilder {
           }
         }
 
-        al.length > 0 ? document.querySelector(`.content_editable`).textContent += `[album${JSON.stringify(al)}album]` : '';
+        al.length > 0 ? document.querySelector(`.content_editable`).textContent += `:alb:${JSON.stringify(al)}:alb:` : '';
         // this.main.remove();
       }
     })
@@ -116,7 +117,7 @@ class AlbumUrlAdd {
       cName: 'input url',
       id: `albumUrl-${num}`,
       type: 'url',
-      autocomplete: 'true',
+      rtn: [],
       onblur: () => {
         if(!this.mainUrl.value) return;
       new AlbumPreviewItem({
@@ -127,7 +128,7 @@ class AlbumUrlAdd {
       });
       list.parentNode.children[0].children[0].textContent = list.children.length;
       },
-      onpaste: () => {
+      onpaste: (e) => {
         if(!e.type === 'paste') return;
         if(!Object.keys(e.clipboardData.files).length > 0){
           console.log('Paaaaste link');
