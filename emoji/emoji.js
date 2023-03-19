@@ -1,114 +1,120 @@
-class List{
-  constructor({path, id, func, rtn}){
-    class Option{
-      constructor(path, value){
-        this.main=docment.createElement('option');
-        this.main.value=value;
-        path.appendChild(this.main);
-      }
+class EmojiPicker{
+  Selection(){
+    if(!window.getSelection().focusNode.isContentEditable && !window.getSelection().focusNode.parentNode.isContentEditable) return console.log('Wrong element', window.getSelection().focusNode);
+    this.sel = {
+      s: window.getSelection().focusNode.textContent.substring(0, window.getSelection().anchorOffset),
+      t: window.getSelection().focusNode.textContent.substring(window.getSelection().anchorOffset, window.getSelection().focusOffset),
+      e: window.getSelection().focusNode.textContent.substring(window.getSelection().focusOffset, window.getSelection().focusNode.textContent.length),
+      target: window.getSelection().focusNode,
+      offset: window.getSelection().anchorOffset
     }
-    this.main=document.createElement('datalist');
-    this.main.id=id;
-    func(this.main);
-    path.appendChild(this.main);
-
-    if(rtn) return this.main;
   }
-}
-class ListOption{
-  constructor(path, value){
-    this.main=document.createElement('option');
-    this.main.value=value;
-    path.appendChild(this.main);
+  Modify(s){
+    this.Selection();
+    if(!this.sel) return;
+
+    if(this.sel.target.textContent.length === this.sel.offset){
+      this.sel.target.textContent = `${this.sel.target.textContent}${s}`;
+    }else{
+      this.sel.target.textContent = `${this.sel.s}${s}${this.sel.t}${this.sel.e}`;
+    }
+    if(mainCfg['gif picker']['close after pick']) this.main.remove();
   }
-}
+  EmojiGroup({path, type}){
+    for(let group in emojisDB){
+      if(!mainCfg['emoji picker']['groups to show'][group]) continue;
+      let main=new Div({
+        path: path,
+        cName: 'emojiGroup',
+        rtn: []
+      });
 
-class EmojiPicker {
-  constructor(path) {
-    class EmojiGroup {
-      constructor({ path, type }) {
-        for (let group in emoji) {
-          this.main=new Div({
-            path: path,
-            cName: 'emojiGroup',
-            rtn: []
-          });
+      new Div({
+        path: main,
+        cName: 'groupName',
+        text: group,
+        onclick: (e) => {
+          e.target.nextSibling.classList.toggle('hidden');
+        }
+      });
 
-          this.name=new Div({
-            path: this.main,
-            cName: 'groupName',
-            text: group,
-            onclick: (e) => {
-              e.target.nextSibling.classList.toggle('hidden');
-            }
+      this.g=new Div({
+        path: main,
+        group: group,
+        cName: 'emojiList',
+        rtn: []
+      });
+      for(let e in emojisDB[group]){
+        if(emojisDB[group][e].type === type){
+          this.Emoji({
+            url: emojisDB[group][e].url,
+            name: e,
+            path: this.g,
+            type: emojisDB[group][e].type,
           });
-
-          this.g=new Div({
-            path: this.main,
-            cName: 'emojiList',
-            rtn: []
-          });
-          for(let e in emoji[group]){
-            if(emoji[group][e].type === type){
-              new Emoji({
-                url: emoji[group][e].url,
-                name: e,
-                path: this.g,
-                type: emoji[group][e].type,
-              });
-            }
-          };
+        }
+      };
+    }
+  }
+  Emoji({path, name, url, type}){
+    let mask=new Div({
+      path: path,
+      cName: 'emojiMask',
+      name: name,
+      tab: '-1',
+      rtn: [],
+      onmouseenter: () => {
+        mask.focus();
+      },
+      onfocus: () => {
+        this.ep = mask.closest('.emojiPicker');
+        this.ep.children[4].children[0].textContent = `:${name}:`;
+        if(type === 'a'){
+          this.ep.children[4].children[1].children[0].src = url;
+          this.ep.children[4].children[1].children[0].poster = '';
+        }else{
+          this.ep.children[4].children[1].children[0].src = '';
+          this.ep.children[4].children[1].children[0].poster = url;
         }
       }
-    }
-    class Emoji{
-      constructor({path, name, url, type}){
-        this.mask=new Div({
-          path: path,
-          cName: 'emojiMask',
-          name: name,
-          tab: '-1',
-          rtn: [],
-          onmouseenter: () => {
-            this.mask.focus();
-          },
-          onfocus: () => {
-            this.ep = this.mask.closest('.emojiPicker');
-            this.ep.children[4].children[0].textContent = `:${name}:`;
-            if(type === 'a'){
-              this.ep.children[4].children[1].children[0].src = url;
-              this.ep.children[4].children[1].children[0].poster = '';
-            }else{
-              this.ep.children[4].children[1].children[0].src = '';
-              this.ep.children[4].children[1].children[0].poster = url;
-            }
-          }
-        });
+    });
 
-        type === 'a' ? new Video({
-          path: this.mask,
-          cName: 'emoji',
-          url: url,
-          preload: 'metadata',
-          pIp: true,
-          onclick: () => {
-            document.querySelector(
-              `p[class=content_editable]`
-            ).innerHTML += this.mask.closest('.emojiPicker').value === 'Emoji' ? `::${name}::` : `:s:${name}:s:`;
+    type === 'a' ? new Video({
+      path: mask,
+      cName: 'emoji',
+      url: url,
+      preload: 'metadata',
+      onclick: () => {
+        let res = (() => {
+          switch(this.emojiType.value){
+            case 'Emoji': return `:e:${mask.parentNode.getAttribute('group')}.${name}:e:`;
+            case 'Sticker': return `:sg:${mask.parentNode.getAttribute('group')}.${name}:sg:`
+            case 'Image': return `:g:${mask.parentNode.getAttribute('group')}.${name}:g:`
+            case 'Url': return emojisDB[mask.parentNode.getAttribute('group')][name].url;
           }
-        }) : new Image({
-          path: this.mask,
-          cName: 'emoji',
-          url: url,
-          onclick: () => {
-            document.querySelector(
-              `p[class=content_editable]`
-            ).innerHTML += this.mask.closest('.emojiPicker').value === 'Emoji' ? `::${name}::` : `:s:${name}:s:`;
-          }
-        });
+        })();
+        this.Modify(res);
       }
-    }
+    }) : new Image({
+      path: mask,
+      cName: 'emoji',
+      url: url,
+      onclick: () => {
+        let res = (() => {
+          switch(this.emojiType.value){
+            case 'Emoji': return `:e:${mask.parentNode.getAttribute('group')}.${name}:e:`;
+            case 'Sticker': return `:s:${mask.parentNode.getAttribute('group')}.${name}:s:`
+            case 'Image': return `:i:${mask.parentNode.getAttribute('group')}.${name}:i:`
+            case 'Url': return emojisDB[mask.parentNode.getAttribute('group')][name].url;
+          }
+        })();
+        this.Modify(res);
+      }
+    });
+  }
+  constructor(path){
     if(document.getElementById('dtf-emojiPicker')) return;
+    this.Selection();
     this.main=new Div({
       path: path,
       cName: 'dtf-window emojiPicker',
@@ -130,19 +136,19 @@ class EmojiPicker {
       text: 'EMOJI PICKER'
     });
 
-    this.list=new List({
-      path: this.main,
-      id: 'yo',
-      rtn: true,
-      func: (path) => {
-        for(let g in emoji){
-          console.log(g);
-          for(let e in emoji[g]){
-            new ListOption(path, e);
-          }
-        }
-      }
-    });
+    // this.list=new List({
+    //   path: this.main,
+    //   id: 'yo',
+    //   rtn: true,
+    //   func: (path) => {
+    //     for(let g in emojisDB){
+    //       console.log(g);
+    //       for(let e in emojisDB[g]){
+    //         new ListOption(path, e);
+    //       }
+    //     }
+    //   }
+    // });
 
     this.search=new Input({
       path: this.main,
@@ -166,9 +172,9 @@ class EmojiPicker {
       delay: 500,
       source: (() => {
         let arr = [];
-        for(let g in emoji){
+        for(let g in emojisDB){
           // console.log(g);
-          for(let e in emoji[g]){
+          for(let e in emojisDB[g]){
             arr.push(e);
           }
         }
@@ -205,14 +211,14 @@ class EmojiPicker {
       path: this.main,
       // container: true,
       name: 'emojiType',
-      value: 'Emoji',
+      value: mainCfg['emoji picker']['default mode'],
       rtn: [],
-      options: ['Emoji', 'Sticker', 'url'],
+      options: ['Emoji', 'Sticker', 'Image', 'Url'],
       onchange: (e) => {
-        if(e.target.value === 'Emoji'){
-          this.mask.children[0].className='emoji';
+        if(e.target.value.match(/Emoji|Sticker|Image/)){
+          this.mask.children[0].className=e.target.value;
         }else{
-          this.mask.children[0].className='sticker';
+          this.mask.children[0].className='Image';
         }
       }
     });
@@ -237,8 +243,7 @@ class EmojiPicker {
       cName: 'file',
       preload: 'metadata',
       autoplay: true,
-      loop: true,
-      pIp: true
+      loop: true
     });
 
     this.typeList=new Div({
@@ -285,11 +290,11 @@ class EmojiPicker {
       rtn: []
     });
 
-      new EmojiGroup({
+      this.EmojiGroup({
         path: this.groupList,
         type: 'na',
       });
-      new EmojiGroup({
+      this.EmojiGroup({
         path: this.groupListAnimated,
         type: 'a',
       });
