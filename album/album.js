@@ -50,18 +50,18 @@ class AlbumItem {
       cName: `mask${spoiler ? ' spoiler' : ''}`,
       rtn: [],
       tab: -1,
-      onclick: (e) => {
-        e.target.focus();
-      },
+      // onclick: (e) => {
+      //   e.target.focus();
+      // },
       onfocus: (e) => {
         e.target.classList.add('picked');
-        picked = e.target;
+        mainVars.picked = e.target;
         new AlbumMiniPreviewer({
           path: document.body
         });
       },
       onkeydown: (e) => {
-        if(!picked) return;
+        if(!mainVars.picked) return;
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
@@ -72,34 +72,41 @@ class AlbumItem {
           nextAlbumItem(e);
         }else
         if(e.code === 'Escape'){
-          picked.blur();
-          picked.children[1].style.scale = '1';
-          picked.classList.remove('picked');
-          picked.classList.remove('zoomed');
+          mainVars.picked.blur();
+          mainVars.picked.children[1].style.scale = '1';
+          mainVars.picked.classList.remove('picked');
+          mainVars.picked.classList.remove('zoomed');
           document.getElementById('dtf-previewer').remove();
         }else
         if(e.code === 'ControlLeft'){
-          btnPressed.ctrl = true;
+          mainVars.btnPressed.ctrl = true;
         }
       },
       onkeyup: (e) => {
-        if(!picked) return;
+        if(!mainVars.picked) return;
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
         if(e.code === 'ControlLeft'){
-          btnPressed.ctrl = false;
+          mainVars.btnPressed.ctrl = false;
         }
       },
       onwheel: (e) => {
-        if(!btnPressed.ctrl) return;
-        if(!picked) return;
+        // if(!e.target.className.match('picked')){
+        //   if(e.deltaY > 10 && e.target.nextSibling){
+        //     // alert('Yo')
+        //   e.preventDefault();
+        //   e.target.nextElementSibling.scrollIntoView();
+        //   }
+        // }
+        if(!mainVars.btnPressed.ctrl) return;
+        if(!mainVars.picked) return;
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
         console.log('Zoom mode on', e);
-        if(!picked.classList.value.match(/zoomed/)){
-          picked.classList.add('zoomed');
+        if(!mainVars.picked.classList.value.match(/zoomed/)){
+          mainVars.picked.classList.add('zoomed');
         }else
         {
           if(e.deltaY > 0) zoom('out')
@@ -147,57 +154,57 @@ class AlbumItem {
 }
 
 function prevAlbumItem(e) {
-  if(!picked) return;
+  if(!mainVars.picked) return;
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
-  if(picked.previousElementSibling) {
-    picked.children[1].style.scale = '1';
-    picked.classList.remove('picked');
-    picked.classList.remove('zoomed');
-    picked.previousElementSibling.focus();
+  if(mainVars.picked.previousElementSibling) {
+    mainVars.picked.children[1].style.scale = '1';
+    mainVars.picked.classList.remove('picked');
+    mainVars.picked.classList.remove('zoomed');
+    mainVars.picked.previousElementSibling.focus();
   }else
-  if(!picked.previousElementSibling) {
-    if(picked.parentElement.children.length === 1) return;
-    picked.children[1].style.scale = '1';
-    picked.classList.remove('picked');
-    picked.classList.remove('zoomed');
-    picked.parentElement.lastElementChild.focus();
+  if(!mainVars.picked.previousElementSibling) {
+    if(mainVars.picked.parentElement.children.length === 1) return;
+    mainVars.picked.children[1].style.scale = '1';
+    mainVars.picked.classList.remove('picked');
+    mainVars.picked.classList.remove('zoomed');
+    mainVars.picked.parentElement.lastElementChild.focus();
   }
 }
 function nextAlbumItem(e) {
-  if(!picked) return;
+  if(!mainVars.picked) return;
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
-  if(picked.nextElementSibling) {
-    picked.children[1].style.scale = '1';
-    picked.classList.remove('picked');
-    picked.classList.remove('zoomed');
-    picked.nextElementSibling.focus();
+  if(mainVars.picked.nextElementSibling) {
+    mainVars.picked.children[1].style.scale = '1';
+    mainVars.picked.classList.remove('picked');
+    mainVars.picked.classList.remove('zoomed');
+    mainVars.picked.nextElementSibling.focus();
   }else
-  if(!picked.nextElementSibling) {
-    if(picked.parentElement.children.length === 1) return;
-    picked.children[1].style.scale = '1';
-    picked.classList.remove('picked');
-    picked.classList.remove('zoomed');
-    console.log(picked.parentElement.firstElementChild);
-    picked.parentElement.firstElementChild.click();
+  if(!mainVars.picked.nextElementSibling) {
+    if(mainVars.picked.parentElement.children.length === 1) return;
+    mainVars.picked.children[1].style.scale = '1';
+    mainVars.picked.classList.remove('picked');
+    mainVars.picked.classList.remove('zoomed');
+    console.log(mainVars.picked.parentElement.firstElementChild);
+    mainVars.picked.parentElement.firstElementChild.click();
   }
 }
 
 function zoom(mode){
   if(mode === 'in') {
-      if(((+picked.children[1].style.scale + mainSettings['album settings']['preview zoom power']) * 100) == 100) picked.classList.remove('zoomed');
-      picked.children[1].style.scale = +picked.children[1].style.scale + mainSettings['album settings']['preview zoom power'];
-      document.getElementById('AMP-zoomLevel').textContent = `Zoom: ${(+picked.children[1].style.scale * 100)}%`;
+      if(((+mainVars.picked.children[1].style.scale + mainCfg['album']['previewer']['zoom power']) * 100) == 100) mainVars.picked.classList.remove('zoomed');
+      mainVars.picked.children[1].style.scale = +mainVars.picked.children[1].style.scale + mainCfg['album']['previewer']['zoom power'];
+      document.getElementById('AMP-statsList').children[1].textContent = `Zoom: ${(+mainVars.picked.children[1].style.scale * 100)}%`;
   }
   else
   if(mode === 'out'){
-    if(+picked.children[1].style.scale > 0 && (+picked.children[1].style.scale - mainSettings['album settings']['preview zoom power']) > 0){
-      if(((+picked.children[1].style.scale - mainSettings['album settings']['preview zoom power']) * 100) == 100) picked.classList.remove('zoomed');
-      picked.children[1].style.scale = +picked.children[1].style.scale - mainSettings['album settings']['preview zoom power'];
-      document.getElementById('AMP-zoomLevel').textContent = `Zoom: ${(+picked.children[1].style.scale * 100)}%`;
+    if(+mainVars.picked.children[1].style.scale > 0 && (+mainVars.picked.children[1].style.scale - mainCfg['album']['previewer']['zoom power']) > 0){
+      if(((+mainVars.picked.children[1].style.scale - mainCfg['album']['previewer']['zoom power']) * 100) == 100) mainVars.picked.classList.remove('zoomed');
+      mainVars.picked.children[1].style.scale = +mainVars.picked.children[1].style.scale - mainCfg['album']['previewer']['zoom power'];
+      document.getElementById('AMP-statsList').children[1].textContent = `Zoom: ${(+mainVars.picked.children[1].style.scale * 100)}%`;
     }
   };
 }
