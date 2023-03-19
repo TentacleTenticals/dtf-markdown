@@ -8,7 +8,7 @@ class AlbumMiniPreviewer {
         tab: '-1',
         rtn: [],
         onkeydown: (e) => {
-          if(!picked) return;
+          if(!mainVars.picked) return;
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
@@ -19,34 +19,34 @@ class AlbumMiniPreviewer {
             nextAlbumItem(e);
           }else
           if(e.code === 'Escape'){
-            picked.blur();
-            picked.children[1].style.transform = 'scale(1.0)';
-            picked.classList.remove('picked', 'zoomed');
-            // picked.classList.remove('zoomed');
+            mainVars.picked.blur();
+            mainVars.picked.children[1].style.transform = 'scale(1.0)';
+            mainVars.picked.classList.remove('picked', 'zoomed');
+            // mainVars.picked.classList.remove('zoomed');
             // this.main.remove();
           }else
           if(e.code === 'ControlLeft'){
-            btnPressed.ctrl = true;
+            mainVars.btnPressed.ctrl = true;
           }
         },
         onkeyup: (e) => {
-          if(!picked) return;
+          if(!mainVars.picked) return;
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
           if(e.code === 'ControlLeft'){
-            btnPressed.ctrl = false;
+            mainVars.btnPressed.ctrl = false;
           }
         },
         onwheel: (e) => {
-          if(!btnPressed.ctrl) return;
-          if(!picked) return;
+          if(!mainVars.btnPressed.ctrl) return;
+          if(!mainVars.picked) return;
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
           console.log('Zoom mode on', e);
-          if(!picked.classList.value.match(/zoomed/)){
-            picked.classList.add('zoomed');
+          if(!mainVars.picked.classList.value.match(/zoomed/)){
+            mainVars.picked.classList.add('zoomed');
           }else
           {
             if(e.deltaY > 0) zoom('out')
@@ -59,33 +59,34 @@ class AlbumMiniPreviewer {
       this.statsList=new Div({
         path: this.main,
         cName: 'statsList',
+        id: 'AMP-statsList',
         rtn: []
       });
 
       this.imageCount=new Div({
-        path: this.main,
+        path: this.statsList,
         // cName: 'statsList',
         // id: 'AMP-statsList',
-        text: `Images: ${Array.prototype.indexOf.call(picked.parentNode.children, picked) + 1} / ${picked.parentNode.childElementCount}`
+        text: `Images: ${Array.prototype.indexOf.call(mainVars.picked.parentNode.children, mainVars.picked) + 1} / ${mainVars.picked.parentNode.childElementCount}`
       });
 
       this.zommLevel=new Div({
-        path: this.main,
+        path: this.statsList,
         // cName: 'statsList',
         // id: 'AMP-zoomLevel',
         text: 'Zoom: 100%'
       });
 
       this.text=new Div({
-        path: this.main,
-        text: `Text: ${picked.children[1].getAttribute('text')}`
+        path: this.statsList,
+        text: `Text: ${mainVars.picked.children[1].getAttribute('text')}`
       });
     }else
     {
       this.statsList=document.getElementById('AMP-statsList');
-      this.statsList.children[0].textContent=`Images: ${Array.prototype.indexOf.call(picked.parentNode.children, picked) + 1} / ${picked.parentNode.childElementCount}`;
+      this.statsList.children[0].textContent=`Images: ${Array.prototype.indexOf.call(mainVars.picked.parentNode.children, mainVars.picked) + 1} / ${mainVars.picked.parentNode.childElementCount}`;
       this.statsList.children[1].textContent=`Zoom: 100%`;
-      this.statsList.children[2].textContent=`Text: ${picked.children[1].getAttribute('text')}`;
+      this.statsList.children[2].textContent=`Text: ${mainVars.picked.children[1].getAttribute('text')}`;
     }
   }
 }
