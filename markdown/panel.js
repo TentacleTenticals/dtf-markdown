@@ -46,7 +46,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'B',
       onclick: () => {
-        this.Modify('<b>', '</b>');
+        this.Modify('<b>', '<b>');
       }
     });
     if(mainCfg['markdown panel']['buttons']['<i>']) this.bIdio=new Button({
@@ -54,7 +54,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'i',
       onclick: () => {
-        this.Modify('<i>', '</i>');
+        this.Modify('<i>', '<i>');
       }
     });
     if(mainCfg['markdown panel']['buttons']['<s>']) this.bStrike=new Button({
@@ -62,7 +62,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'S',
       onclick: () => {
-        this.Modify('<s>', '</s>');
+        this.Modify('<s>', '<s>');
       }
     });
     if(mainCfg['markdown panel']['buttons']['album']) this.bAlbum=new Button({
