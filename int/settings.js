@@ -78,6 +78,12 @@ function setSettings(main, mainCfg){
           type: 'checkbox',
           label: '<s>',
           name: '<s>'
+        },
+        {
+          type: 'checkbox',
+          label: 'Youtube',
+          name: 'Youtube',
+          c: {g:'comments.show.embeds'}
         }
       ]}
     });
@@ -132,28 +138,89 @@ function setSettings(main, mainCfg){
 
   new Field({
     path: main,
+    groupName: 'attachments',
+    cName: 'grid',
+    legend: 'Спойлеры (закрытые)',
+    info: 'Внешний вид закрытых спойлеров',
+    rtn: [],
+    inputs: {c:{g:'spoiler.closed.attachments.blur'}, a:{cfg:mainCfg},
+      list:[
+        {
+          type: 'number',
+          label: 'Emoji',
+          name: 'emoji'
+        },
+        {
+          type: 'number',
+          label: 'Sticker',
+          name: 'sticker'
+        },
+        {
+          type: 'number',
+          label: 'Gif',
+          name: 'gif'
+        },
+        {
+          type: 'number',
+          label: 'Image',
+          name: 'image'
+        },
+        {
+          type: 'number',
+          label: 'Youtube',
+          name: 'Youtube',
+          c:{g:'spoiler.closed.attachments.blur.embeds'}
+        },
+        {
+          type: 'color',
+          label: 'Цвет спойлера',
+          name: 'text',
+          c:{g:'spoiler.closed.background'}
+        }
+      ]}
+  });
+  new Field({
+    path: main,
+    groupName: 'attachments',
+    cName: 'grid',
+    legend: 'Спойлеры (открытые)',
+    info: 'Внешний вид открытых спойлеров',
+    rtn: [],
+    inputs: {a:{cfg:mainCfg},
+      list:[
+        {
+          type: 'color',
+          label: 'Цвет спойлера',
+          name: 'text',
+          c:{g:'spoiler.opened.background'}
+        }
+      ]}
+  });
+
+  new Field({
+    path: main,
     groupName: 'album',
     cName: 'grid',
     legend: 'Альбомы в комментариях (итемы)',
     rtn: [],
     inputs: {c:{g:'items'}, a:{cfg:mainCfg},
       list:[
-      {
-        type: 'number',
-        label: 'Кол-во итемов в колонке',
-        name: 'in column'
-      },
-      {
-        type: 'number',
-        label: 'Размер итемов',
-        name: 'size'
-      },
-      {
-        type: 'number',
-        label: 'Отступ итемов',
-        name: 'padding'
-      }
-    ]}
+        {
+          type: 'number',
+          label: 'Кол-во итемов в колонке',
+          name: 'in column'
+        },
+        {
+          type: 'number',
+          label: 'Размер итемов',
+          name: 'size'
+        },
+        {
+          type: 'number',
+          label: 'Отступ итемов',
+          name: 'padding'
+        }
+      ]}
   });
 
   new Field({
