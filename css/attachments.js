@@ -6,14 +6,58 @@ let attachmentsCSS = (cfg) => {
   margin: unset;
 }
 .dtf-attach.spoiler {
-  display: inline;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 5px 5px;
+  box-shadow: 0 0 3px 0px rgb(0 0 0);
 }
-.dtf-attach.spoiler:not(.opened) .dtf-comment.text {
+.dtf-attach.spoiler * {
+  /*pointer-events: none;*/
+}
+.dtf-attach.spoiler::before {
+  display: inline;
+  content: 'SP ⤵️';
   background-color: rgb(0 0 0);
+  color: rgb(255 255 255);
+  padding: 0 5px 0 5px;
+  margin: 0 5px 0 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.dtf-attach.spoiler.opened::before {
+  content: 'SP ⤴️';
+}
+.dtf-attach.spoiler:hover::before {
+  filter: brightness(1.2);
+}
+
+.dtf-attach.spoiler:not(.opened) .dtf-comment.text {
+  background-color: ${cfg['attachments']['spoiler']['closed']['background']['text']};
   border-radius: 3px;
+  color: transparent;
+  user-select: none;
 }
 .dtf-attach.spoiler:not(.opened) .dtf-attach.emoji img {
-  filter: blur(10px);
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['emoji']}px);
+}
+.dtf-attach.spoiler .dtf-attach.sticker img {
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['sticker']}px);
+}
+.dtf-attach.spoiler:not(.opened) .dtf-attach.gif video {
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['gif']}px);
+}
+
+.dtf-attach.spoiler:not(.opened) .dtf-attach.embed.yt .mediaStarter {
+  backdrop-filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['embeds']['Youtube']}px);
+}
+.dtf-attach.spoiler:not(.opened) .dtf-attach.embed.yt iframe {
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['embeds']['Youtube']}px);
+}
+
+.dtf-attach.spoiler.opened .dtf-comment.text {
+  background-color: ${cfg['attachments']['spoiler']['opened']['background']['text']};
 }
 
 .dtf-commentText {
@@ -25,6 +69,48 @@ let attachmentsCSS = (cfg) => {
   /* display: inline; */
   margin: unset;
   padding: unset;
+}
+
+.dtf-attach.link {
+  background-color: rgb(249 249 249 / 60%);
+  color: rgb(8 117 135);
+  font-weight: 500;
+  text-decoration: unset;
+  padding: 0 5px 0 5px;
+  border-radius: 2px;
+  /* box-shadow: inset 0 0 6px 0px rgb(0 0 0); */
+}
+.dtf-attach.link::before {
+  display: inline;
+  content: '🔗';
+  color: rgb(0 0 0);
+  padding: 0 3px 0 3px;
+  margin: 0 3px 0 0;
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px 0px rgb(0 0 0);
+}
+.dtf-attach.link:hover {
+  filter: brightness(1.2);
+}
+
+.dtf-attach.embed {
+  display: inline-flex;
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  aspect-ratio: 1/0.5;
+}
+.dtf-attach.embed.yt {
+  width: ${cfg['attachments']['size']['embeds']['Youtube']}px;
+}
+.dtf-attach.embed iframe {
+  max-width: inherit;
+  max-height: inherit;
+  margin: auto;
+  border: unset;
+  border-radius: 1px;
+  box-shadow: 0 0 3px 1px rgb(255 255 255);
 }
 
 .dtf-attach.gif {
@@ -111,11 +197,11 @@ let attachmentsCSS = (cfg) => {
   margin: auto;
 }
 
-.dtf-attach.playing .gifStarter {
+.dtf-attach.playing .mediaStarter {
   display: none;
 }
 
-.gifStarter {
+.mediaStarter {
   display: flex;
   width: 100%;
   height: 100%;
@@ -126,7 +212,7 @@ let attachmentsCSS = (cfg) => {
   z-index: 10;
   /* cursor: pointer; */
 }
-.gifStarter .btn {
+.mediaStarter .btn {
   display: flex;
   background-color: rgb(255 255 255);
   margin: 0 auto;
@@ -144,13 +230,55 @@ let attachmentsCSS = (cfg) => {
   z-index: 1;
   /* cursor: pointer; */
 }
-.gifStarter .btn img {
+.mediaStarter .btn img {
   width: 35%;
   margin: 0px 0px 0px 10%;
 }
-.dtf-attach.gif:hover .gifStarter .btn {
+.dtf-attach.gif:hover .mediaStarter .btn {
   background-color: rgb(255 0 0);
 }
+.dtf-attach.embed.yt:hover .mediaStarter .btn {
+  background-color: rgb(255 0 0);
+}
+
+.dtf-attach.playing .mediaStarter {
+  display: none;
+}
+
+.videoStarter {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 40%);
+  position: absolute;
+  align-items: center;
+  z-index: 10;
+  cursor: pointer;
+}
+.videoStarter .btn {
+  display: flex;
+  background-color: rgb(255 255 255);
+  margin: 0 auto;
+  height: 50%;
+  max-height: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 4px 0px rgb(0 0 0);
+  z-index: 1;
+}
+.videoStarter .btn img {
+  width: 35%;
+  margin: 0px 0px 0px 10%;
+}
+.dtf-attach.embed:hover .videoStarter .btn {
+  background-color: rgb(255 0 0);
+}
+
 .dtf-attach.gif::after {
   display: ${cfg['attachments']['gif']['show gif ico'] ? 'block' : 'none'};
   content: 'GIF';
