@@ -9,29 +9,35 @@ function attachmentsChecker(t, path){
     B({path, text}){
       this.main = document.createElement('b');
       this.main.className = 'dtf-attach bold';
-      if (text.match(rW.filter)) writer(text, this.main);
-      else this.main.textContent = text;
       path.appendChild(this.main);
+      text.match(rW.filter) ? writer(text, this.main) : this.P({
+        path: this.main,
+        text: text
+      })
     }
     I({path, text}){
       this.main = document.createElement('i');
       this.main.className = 'dtf-attach i';
-      if (text.match(rW.filter)) writer(text, this.main);
-      else this.main.textContent = text;
       path.appendChild(this.main);
+      text.match(rW.filter) ? writer(text, this.main) : this.P({
+        path: this.main,
+        text: text
+      })
     }
     S({path, text}){
       this.main = document.createElement('s');
       this.main.className = 'dtf-attach s';
-      if (text.match(rW.filter)) writer(text, this.main);
-      else this.main.textContent = text;
       path.appendChild(this.main);
+      text.match(rW.filter) ? writer(text, this.main) : this.P({
+        path: this.main,
+        text: text
+      })
     }
-    A({path, text}){
+    A({path, url, text, name}){
       this.main = document.createElement('a');
       this.main.className = 'dtf-attach link';
-      this.main.textContent = text.length > 25 ? `${text.slice(0, 25)}...` : text;
-      this.main.href=text;
+      this.main.textContent = name ? name : (text.length > 25 ? `${text.slice(0, 25)}...` : text);
+      this.main.href=url;
       this.main.target='_blank';
       path.appendChild(this.main);
     }
@@ -39,10 +45,15 @@ function attachmentsChecker(t, path){
       this.main=new Div({
         path: path,
         cName: 'dtf-attach spoiler',
-        text: text.match(rW.filter) ? writer(text, this.main) : text,
-        onclick: () => {
-          this.main.classList.toggle('opened');
+        rtn: [],
+        onclick: (e) => {
+          if(e.target !== e.currentTarget) return;
+          e.currentTarget.classList.toggle('opened');
         }
+      });
+      text.match(rW.filter) ? writer(text, this.main) : this.P({
+        path: this.main,
+        text: text
       });
     }
     Emoji({path, url, type, title}){
@@ -53,12 +64,10 @@ function attachmentsChecker(t, path){
         title: title
       });
 
-      // if(type.match(/^(emoji s)$/)){
         new Image({
           path: this.main,
           url: url
         });
-      // }
     }
     Gif({path, url, type, title}){
       this.main=new Div({
@@ -75,7 +84,7 @@ function attachmentsChecker(t, path){
       if(type.match(/^(gif|stickerGif) (s|ns)$/)){
         this.starter=new Div({
           path: this.main,
-          cName: 'gifStarter',
+          cName: 'mediaStarter',
           rtn: []
         });
         this.prev=new Div({
@@ -106,9 +115,38 @@ function attachmentsChecker(t, path){
         }
       });
     }
+    Iframe({path, url, type}){
+      let filter = /https(?:s)*:\/\/.+(?:youtube\.com|youtu\.be).+\/([^?]+).*/gm;
+      this.main=new Div({
+        path: path,
+        cName: `dtf-attach ${type}`,
+        rtn: [],
+        style: `background-image:url(https://img.youtube.com/vi/${url.replace(filter, '$1')}/sddefault.jpg)`
+      });
+      this.starter=new Div({
+        path: this.main,
+        cName: 'mediaStarter',
+        rtn: [],
+        onclick: () => {
+          this.starter.remove();
+          this.embed=document.createElement('iframe');
+          this.embed.src=`${url}?modestbranding=1&rel=0`;
+          this.main.appendChild(this.embed);
+        }
+      });
+      this.prev=new Div({
+        path: this.starter,
+        cName: 'btn',
+        rtn: []
+      });
+      new Image({
+        path: this.prev,
+        url: 'https://github.com/TentacleTenticals/dtf-markdown/raw/main/libs/Play.svg'
+      });
+    }
   }
   let rW = {
-    tag: '<(?:b|i|s|a)>|:(?:|g|i|s|e|sg|eg|alb):|\\|\\|',
+    tag: '<(?:b|i|s|a)>|:(?:|g|i|s|e|sg|eg|a|emb|alb):|\\|\\|',
     text: '[^]+',
     get filter(){
       return new RegExp(`(${rW.tag})(${rW.text}?)(${rW.tag})`, 'gmi')
@@ -182,12 +220,34 @@ function attachmentsChecker(t, path){
                 text: text
               });
             break;
-            case '<a>' && '<a>':
+            case '<a>' && '<a>': {
+                const enc = urlCoder.encoder(text);
+                new Attachment().A({
+                  path: path,
+                  type: 'a',
+                  url: enc,
+                  text: enc
+                });
+              }
+            break;
+            case ':a:' && ':a:': {
+              const enc = urlCoder.encoder(text);
+              if(text.match(/\\/)){
+                const l = enc.split('\\');
+                new Attachment().A({
+                  path: path,
+                  type: 'a',
+                  url: l[0],
+                  name: l[1]
+                });
+              }else
               new Attachment().A({
                 path: path,
-                type: 'spoiler',
-                text: text
+                type: 'a',
+                url: enc,
+                text: enc
               });
+            }
             break;
             case ':e:' && ':e:':
               if(text.match(/\./)){
@@ -256,8 +316,18 @@ function attachmentsChecker(t, path){
               }else{
                 new Attachment().Gif({
                   path: path,
-                  url:urlCoder.encoder(text),
+                  url: urlCoder.encoder(text),
                   type: 'gif ns'
+                });
+              }
+            break;
+            case ':emb:' && ':emb:': {
+                const enc = urlCoder.encoder(text);
+                if(enc.match(/youtube\.com|youtu\.be/) && mainCfg['attachments']['comments']['show']['embeds']['Youtube'])
+                new Attachment().Iframe({
+                  path: path,
+                  url: enc,
+                  type: 'embed yt'
                 });
               }
             break;
