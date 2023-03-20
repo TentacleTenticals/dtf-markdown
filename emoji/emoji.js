@@ -67,14 +67,13 @@ class EmojiPicker{
         mask.focus();
       },
       onfocus: () => {
-        this.ep = mask.closest('.emojiPicker');
-        this.ep.children[4].children[0].textContent = `:${name}:`;
+        this.emojiName.textContent = `:${name}:`;
         if(type === 'a'){
-          this.ep.children[4].children[1].children[0].src = url;
-          this.ep.children[4].children[1].children[0].poster = '';
+          this.file.src = url;
+          this.file.poster = '';
         }else{
-          this.ep.children[4].children[1].children[0].src = '';
-          this.ep.children[4].children[1].children[0].poster = url;
+          this.file.src = '';
+          this.file.poster = url;
         }
       }
     });
@@ -231,7 +230,8 @@ class EmojiPicker{
     this.emojiName=new Div({
       path: this.preview,
       cName: 'emojiCmd',
-      text: '-'
+      text: '-',
+      rtn: []
     });
     this.mask=new Div({
       path: this.preview,
@@ -243,7 +243,8 @@ class EmojiPicker{
       cName: 'file',
       preload: 'metadata',
       autoplay: true,
-      loop: true
+      loop: true,
+      rtn: []
     });
 
     this.typeList=new Div({
