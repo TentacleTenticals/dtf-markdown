@@ -44,6 +44,7 @@ function searchTenor(tokens, search){
 
 class GifSearch{
   Selection(){
+    if(!window.getSelection().focusNode) return;
     if(!window.getSelection().focusNode.isContentEditable && !window.getSelection().focusNode.parentNode.isContentEditable) return console.log('Wrong element', window.getSelection().focusNode);
     this.sel = {
       s: window.getSelection().focusNode.textContent.substring(0, window.getSelection().anchorOffset),
