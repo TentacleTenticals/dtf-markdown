@@ -16,7 +16,10 @@ let defaultSettings = {
         'spoilers': true,
         '<b>': true,
         '<i>': true,
-        '<s>': true
+        '<s>': true,
+        'embeds': {
+          'Youtube': true
+        }
       }
     },
     'size': {
@@ -25,13 +28,40 @@ let defaultSettings = {
       'sticker': 120,
       'stickerGif': 120,
       'gif': 150,
-      'image': 150
+      'image': 150,
+      'embeds': {
+        'Youtube': 300
+      }
     },
     'gif': {
       'show gif ico': true,
       'autoplay': false,
       'mute': true,
       'pIp': false
+    },
+    'spoiler': {
+      'closed': {
+        'attachments': {
+          'blur': {
+            'emoji': 10,
+            'sticker': 10,
+            'image': 10,
+            'gif': 10,
+            'embeds': {
+              'Youtube': 10
+            }
+          },
+        },
+        'background': {
+          'text': '#000000'
+        }
+      },
+      'opened': {
+        'attachments': {},
+        'background': {
+          'text': '#c2e1f9'
+        }
+      }
     }
   },
   'album': {
@@ -131,6 +161,10 @@ let defaultSettings = {
       },
       'Tenor': {}
     }
+  },
+  'link converter': {
+    'default mode': 'url',
+    'close after pick': true
   },
   'scriptInfo': {
     scriptName: 'DTF markdown',
