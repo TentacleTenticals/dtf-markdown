@@ -188,7 +188,7 @@ function attachmentsChecker(t, path){
     if(first){
       path.textContent = '';
       path.className = 'dtf-commentText';
-      t = t.replace(/(https:\/\/[^ ]+)/gm, '<a>$1<a>');
+      t = t.replace(/(http(?:s)*:\/\/[^ ]+)(?= )/gm, '<a>$1<a>');
     }
     const words = splitter(t);
     console.log('W', words);
@@ -245,25 +245,25 @@ function attachmentsChecker(t, path){
                 });
               }
             break;
-            case ':a:' && ':a:': {
-              const enc = urlCoder.encoder(text);
-              if(text.match(/\\/)){
-                const l = enc.split('\\');
-                new Attachment().A({
-                  path: path,
-                  type: 'a',
-                  url: l[0],
-                  name: l[1]
-                });
-              }else
-              new Attachment().A({
-                path: path,
-                type: 'a',
-                url: enc,
-                text: enc
-              });
-            }
-            break;
+            // case ':a:' && ':a:': {
+            //   const enc = urlCoder.encoder(text);
+            //   if(text.match(/\\/)){
+            //     const l = enc.split('\\');
+            //     new Attachment().A({
+            //       path: path,
+            //       type: 'a',
+            //       url: l[0],
+            //       name: l[1]
+            //     });
+            //   }else
+            //   new Attachment().A({
+            //     path: path,
+            //     type: 'a',
+            //     url: enc,
+            //     text: enc
+            //   });
+            // }
+            // break;
             case ':e:' && ':e:':
               if(text.match(/\./)){
                 let emj = text.split('.');
