@@ -141,9 +141,9 @@ function setSettings(main, mainCfg){
     groupName: 'attachments',
     cName: 'grid',
     legend: 'Спойлеры (закрытые)',
-    info: 'Внешний вид закрытых спойлеров',
+    info: 'Внешний вид закрытых спойлеров. BLur',
     rtn: [],
-    inputs: {c:{g:'spoiler.closed.attachments.blur'}, a:{cfg:mainCfg},
+    inputs: {c:{g:'spoiler.closed.attachments.blur', n:'px'}, a:{cfg:mainCfg},
       list:[
         {
           type: 'number',
@@ -169,7 +169,7 @@ function setSettings(main, mainCfg){
           type: 'number',
           label: 'Youtube',
           name: 'Youtube',
-          c:{g:'spoiler.closed.attachments.blur.embeds'}
+          c:{g:'spoiler.closed.attachments.blur.embeds', n:'px'}
         },
         {
           type: 'color',
