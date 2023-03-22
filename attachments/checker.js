@@ -10,7 +10,7 @@ function attachmentsChecker(t, path){
       this.main = document.createElement('b');
       this.main.className = 'dtf-attach bold';
       path.appendChild(this.main);
-      text.match(rW.filter) ? writer(text, this.main) : this.P({
+      text.match(rW.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       })
@@ -19,7 +19,7 @@ function attachmentsChecker(t, path){
       this.main = document.createElement('i');
       this.main.className = 'dtf-attach i';
       path.appendChild(this.main);
-      text.match(rW.filter) ? writer(text, this.main) : this.P({
+      text.match(rW.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       })
@@ -28,7 +28,7 @@ function attachmentsChecker(t, path){
       this.main = document.createElement('s');
       this.main.className = 'dtf-attach s';
       path.appendChild(this.main);
-      text.match(rW.filter) ? writer(text, this.main) : this.P({
+      text.match(rW.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       })
@@ -51,7 +51,7 @@ function attachmentsChecker(t, path){
           e.currentTarget.classList.toggle('opened');
         }
       });
-      text.match(rW.filter) ? writer(text, this.main) : this.P({
+      text.match(rW.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       });
@@ -64,10 +64,10 @@ function attachmentsChecker(t, path){
         title: title
       });
 
-        new Image({
-          path: this.main,
-          url: url
-        });
+      new Image({
+        path: this.main,
+        url: url
+      });
     }
     Gif({path, url, type, title}){
       this.main=new Div({
@@ -146,8 +146,22 @@ function attachmentsChecker(t, path){
     }
   }
   let rW = {
-    tag: '<(?:b|i|s|a)>|:(?:|g|i|s|e|sg|eg|a|emb|alb):|\\|\\|',
+    htm: '<(?:b|i|s|a)>',
+    tag: '<(?:b|s)>|:(?:|g|i|s|e|sg|eg|album):|\\|\\|',
     text: '[^]+',
+    sp: '\\|\\|',
+    scrTag: ':(?:e|eg|s|sg|i|g|emg|alb):',
+    get search() {
+      return new RegExp(`(${this.htm}|${this.sp}|${this.scrTag})[^]+(${this.htm}|${this.sp}|${this.scrTag})`)
+    },
+    get spl() {
+      return new RegExp(`(${this.sp}[^]+${this.sp}|${this.scrTag}[^]*?${this.scrTag}|${this.htm}[^]+${this.htm})`, 'gmi')
+    },
+    get tags() {
+      return new RegExp(`(${this.sp}|${this.scrTag}|${this.htm})([^]+)(\\1)`, 'gmi')
+    },
+    // tag: '<(?:b|i|s|a)>|:(?:|g|i|s|e|sg|eg|a|emb|alb):|\\|\\|',
+    // text: '[^]+',
     get filter(){
       return new RegExp(`(${rW.tag})(${rW.text}?)(${rW.tag})`, 'gmi')
     },
@@ -169,7 +183,7 @@ function attachmentsChecker(t, path){
   // }
   function writer(t, path, first){
     function splitter(text){
-      return text.split(rW.fix);
+      return text.split(rW.spl).filter(e => !!e);
     }
     if(first){
       path.textContent = '';
@@ -177,9 +191,10 @@ function attachmentsChecker(t, path){
       t = t.replace(/(https:\/\/[^ ]+)/gm, '<a>$1<a>');
     }
     const words = splitter(t);
+    console.log('W', words);
 
     words.forEach(i => {
-      if(i && !i.match(rW.filter)){
+      if(i && !i.match(rW.search)){
         new Attachment().P({
           path: path,
           type: 'p',
@@ -187,10 +202,10 @@ function attachmentsChecker(t, path){
         });
         // console.log(`new P (${i})`);
       }else
-      if (i.match(rW.filter)) {
+      if (i.match(rW.search)) {
         // console.log(i)
-        i.replace(rW.filter2, (d, op, text, ed) => {
-          // console.log(`${op} / ${text} / ${ed}`);
+        i.replace(rW.tags, (d, op, text, ed) => {
+          console.log(`[${op}] [${text}] [${ed}]`);
           switch(op && ed){
             case '||' && '||':
               new Attachment().Spoiler({
