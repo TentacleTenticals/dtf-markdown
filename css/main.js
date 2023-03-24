@@ -39,9 +39,12 @@ let mainCSS = `
   font-size: 10px;
 }
 
-.commentsPreviewer {
-  min-width: 300px;
+.dtf-window.commentsPreviewer {
+  width: 100%;
+}
+.dtf-window.commentsPreviewer .preview {
   color: rgb(255 255 255);
+  padding: 0 3px 3px 3px;
 }
 
 .dtf-scriptWindow input {
