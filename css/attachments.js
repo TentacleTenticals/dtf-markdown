@@ -38,15 +38,24 @@ let attachmentsCSS = (cfg) => {
   border-radius: 3px;
   color: transparent;
   user-select: none;
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['text']}px);
 }
-.dtf-attach.spoiler:not(.opened) .dtf-attach.emoji img {
+.dtf-attach.spoiler:not(.opened) .dtf-attach.link {
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['link']}px) brightness(0.3);
+}
+
+.dtf-attach.spoiler:not(.opened) .dtf-attach:is(.emoji, .emojiGif) :is(img, video) {
   filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['emoji']}px);
 }
-.dtf-attach.spoiler .dtf-attach.sticker img {
+.dtf-attach.spoiler .dtf-attach:is(.sticker, .stickerGif) :is(img, video) {
   filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['sticker']}px);
 }
 .dtf-attach.spoiler:not(.opened) .dtf-attach.gif video {
   filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['gif']}px);
+}
+
+.dtf-attach.spoiler:not(.opened) .album {
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['album']}px) brightness(0.3);
 }
 
 .dtf-attach.spoiler:not(.opened) .dtf-attach.embed.yt .mediaStarter {
