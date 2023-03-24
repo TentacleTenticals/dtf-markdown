@@ -18,7 +18,9 @@ let defaultSettings = {
         '<i>': true,
         '<s>': true,
         'embeds': {
-          'Youtube': true
+          'Youtube': true,
+          'Spotify': true,
+          'Yandex': true
         }
       }
     },
@@ -30,7 +32,9 @@ let defaultSettings = {
       'gif': 150,
       'image': 150,
       'embeds': {
-        'Youtube': 300
+        'Youtube': 300,
+        'Spotify': 360,
+        'Yandex': 300
       }
     },
     'gif': {
@@ -48,7 +52,9 @@ let defaultSettings = {
             'image': 10,
             'gif': 10,
             'embeds': {
-              'Youtube': 10
+              'Youtube': 5,
+              'Spotify': 10,
+              'Yandex': 10
             }
           },
         },
