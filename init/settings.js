@@ -84,6 +84,18 @@ function setSettings(main, mainCfg){
           label: 'Youtube',
           name: 'Youtube',
           c: {g:'comments.show.embeds'}
+        },
+        {
+          type: 'checkbox',
+          label: 'Spotify',
+          name: 'Spotify',
+          c: {g:'comments.show.embeds'}
+        },
+        {
+          type: 'checkbox',
+          label: 'Yandex',
+          name: 'Yandex',
+          c: {g:'comments.show.embeds'}
         }
       ]}
     });
@@ -172,6 +184,18 @@ function setSettings(main, mainCfg){
           c:{g:'spoiler.closed.attachments.blur.embeds', n:'px'}
         },
         {
+          type: 'number',
+          label: 'Spotify',
+          name: 'Spotify',
+          c:{g:'spoiler.closed.attachments.blur.embeds', n:'px'}
+        },
+        {
+          type: 'number',
+          label: 'Yandex',
+          name: 'Yandex',
+          c:{g:'spoiler.closed.attachments.blur.embeds', n:'px'}
+        },
+        {
           type: 'color',
           label: 'Цвет спойлера',
           name: 'text',
@@ -213,12 +237,14 @@ function setSettings(main, mainCfg){
         {
           type: 'number',
           label: 'Размер итемов',
-          name: 'size'
+          name: 'size',
+          c:{g:'items', n:'px'}
         },
         {
           type: 'number',
           label: 'Отступ итемов',
-          name: 'padding'
+          name: 'padding',
+          c:{g:'items', n:'px'}
         }
       ]}
   });
@@ -233,8 +259,9 @@ function setSettings(main, mainCfg){
       list:[
       {
         type: 'number',
-        label: '(px) Высота альбомного листа',
-        name: 'height'
+        label: 'Высота альбомного листа',
+        name: 'height',
+        c:{g:'list', n:'px'}
       },
       {
         type: 'color',
@@ -362,8 +389,7 @@ function setSettings(main, mainCfg){
           groups.push({
             type: 'checkbox',
             label: [g],
-            name: g,
-            // checked: mainCfg['emoji picker']['groups to show'][g]
+            name: g
           })
         }
         return groups;
@@ -402,10 +428,7 @@ function setSettings(main, mainCfg){
             label: 'URLs',
             options: ['gif URL', 'image URL', 'video URL']
           }
-        ],
-        // get value(){
-        //   return mainCfg['gif picker'][this.name]
-        // }
+        ]
       }
     ]}
   });
@@ -422,8 +445,7 @@ function setSettings(main, mainCfg){
           groups.push({
             type: 'checkbox',
             label: [g],
-            name: g,
-            // checked: mainCfg['gif picker']['groups to show'][g]
+            name: g
           })
         }
         return groups;
