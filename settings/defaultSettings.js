@@ -94,9 +94,12 @@ let defaultSettings = {
   },
   'album builder': {
     'allow items upload': true,
+    'close after pick': true,
     'tokens': {
       'Imgur': {},
-      'ImgBB': {}
+      'ImgBB': {
+        'clientSecret': ''
+      }
     }
   },
   'spoiler settings': {
@@ -110,10 +113,6 @@ let defaultSettings = {
     'content blur on hover': 6,
     'turn off content blur on hover': true,
     'show spoiler on hover': false
-  },
-  'album items upload sites': {
-    'Imgur': false,
-    'ImgBB': [{token: 'test'}]
   },
   'markdown panel': {
     'buttons': {
@@ -133,8 +132,8 @@ let defaultSettings = {
         },
         'modes': {
           'a': 'Default',
-          'b': 'Gfycat',
-          'c': 'Tenor'
+          'b': 'Tenor',
+          'c': 'Gfycat'
         }
       }
     }
@@ -165,7 +164,9 @@ let defaultSettings = {
         'clientID': '',
         'clientSecret': ''
       },
-      'Tenor': {}
+      'Tenor': {
+        'clientSecret': ''
+      }
     }
   },
   'link converter': {
