@@ -10,7 +10,7 @@ function attachmentsChecker(t, path){
       this.main = document.createElement('b');
       this.main.className = 'dtf-attach bold';
       path.appendChild(this.main);
-      text.match(rW.search) ? writer(text, this.main) : this.P({
+      text.match(filter.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       })
@@ -19,7 +19,7 @@ function attachmentsChecker(t, path){
       this.main = document.createElement('i');
       this.main.className = 'dtf-attach i';
       path.appendChild(this.main);
-      text.match(rW.search) ? writer(text, this.main) : this.P({
+      text.match(filter.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       })
@@ -28,7 +28,7 @@ function attachmentsChecker(t, path){
       this.main = document.createElement('s');
       this.main.className = 'dtf-attach s';
       path.appendChild(this.main);
-      text.match(rW.search) ? writer(text, this.main) : this.P({
+      text.match(filter.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       })
@@ -51,7 +51,7 @@ function attachmentsChecker(t, path){
           e.currentTarget.classList.toggle('opened');
         }
       });
-      text.match(rW.search) ? writer(text, this.main) : this.P({
+      text.match(filter.search) ? writer(text, this.main) : this.P({
         path: this.main,
         text: text
       });
@@ -115,13 +115,19 @@ function attachmentsChecker(t, path){
         }
       });
     }
-    Iframe({path, url, type}){
-      let filter = /https(?:s)*:\/\/.+(?:youtube\.com|youtu\.be).+\/([^?]+).*/gm;
+    Iframe({path, url, type, embed}){
+      // if(!this.urlCheck(url)) return;
+      // // alert('Yo')
+      // // let filter = /https(?:s)*:\/\/.+(?:youtube\.com|youtu\.be).+\/([^?]+).*/gm;
+      // const embed = this.urlCheck(url);
+      console.log(embed)
       this.main=new Div({
         path: path,
-        cName: `dtf-attach ${type}`,
+        cName: `dtf-attach ${type} ${embed.site} ${embed.type}`,
         rtn: [],
-        style: `background-image:url(https://img.youtube.com/vi/${url.replace(filter, '$1')}/sddefault.jpg)`
+        style: (() => {
+          if(embed.site === 'yt' && embed.type === 'video') return `background-image:url(https://img.youtube.com/vi/${embed.id}/sddefault.jpg)`;
+        })()
       });
       this.starter=new Div({
         path: this.main,
@@ -130,7 +136,12 @@ function attachmentsChecker(t, path){
         onclick: () => {
           this.starter.remove();
           this.embed=document.createElement('iframe');
-          this.embed.src=`${url}?modestbranding=1&rel=0`;
+          this.embed.src=`${embed.url}`;
+          this.embed.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture');
+          // if(embed.site === 'spt'){
+            this.embed.width='100%';
+            this.embed.height='100%';
+          // }
           this.main.appendChild(this.embed);
         }
       });
@@ -144,46 +155,80 @@ function attachmentsChecker(t, path){
         url: 'https://github.com/TentacleTenticals/dtf-markdown/raw/main/libs/Play.svg'
       });
     }
+    urlCheck({path, url, attType}){
+      console.log('Q', url)
+      const sites = ['youtube', 'youtu\.be', 'spotify\.com', 'music\.yandex'];
+      let res;
+      switch (url.match(new RegExp(`${sites.join('|')}`))?.[0]) {
+        case 'youtube': {
+          if(!mainCfg['attachments']['comments']['show']['embeds']['Youtube']) return;
+          url.replace(/http(?:s):\/\/[^/?]+\/(watch\?v=|\?=list|playlist\?list=|embed\/videoseries\?list=|embed\/|[^]+)([^=&]*).*/gm, (d, type, id) => {
+            if(type.match(/^(watch\?v=|embed\/)$/)){
+              this.Iframe({path:path, type:attType, embed:{site:'yt', type:'video', id:id, url:`https://www.youtube.com/embed/${id}?modestbranding=1&rel=0`}});
+            }else
+            if(type.match(/^(\?=list|embed\/videoseries\?list=|playlist\?list=)$/)){
+              this.Iframe({path:path, type:attType, embed:{site:'yt', type:'list', id:id, url:`https://www.youtube.com/embed/videoseries?list=${id}`}});
+            }else{
+              this.Iframe({path:path, type:attType, embed:{site:'yt', type:'video', id:type, url:`https://www.youtube.com/embed/${type}?modestbranding=1&rel=0`}});
+            }
+          })
+          return res;
+        }
+        case 'youtu.be': {
+          if(!mainCfg['attachments']['comments']['show']['embeds']['Youtube']) return;
+          url.replace(/http(?:s):\/\/[^/?]+\/(watch\?v=|\?=list|playlist\?list=|embed\/videoseries\?list=|embed\/|[^]+)([^=&]*).*/gm, (d, type, id) => {
+            if(type && !id){
+              this.Iframe({path:path, type:attType, embed:{site:'yt', type:'video', id:type, url:`https://www.youtube.com/embed/${type}?modestbranding=1&rel=0`}});
+            }
+          })
+          return res;
+        }
+        case 'spotify.com': {
+          console.log('Spotify');
+          if(!mainCfg['attachments']['comments']['show']['embeds']['Spotify']) return;
+          url.replace(/http(?:s):\/\/[^/]+\/(track|playlist|artist|album)\/([^?]+).*/gm, (d, type, id) => {
+            if(type.match(/track|playlist|artist|album/)){
+              this.Iframe({path:path, type:attType, embed:{site:'spt', type:type, id:id, url:`https://open.spotify.com/embed/${type}/${id}?utm_source=generator`}});
+            }
+          })
+          return res;
+        }
+        case 'music.yandex': {
+          if(!mainCfg['attachments']['comments']['show']['embeds']['Yandex']) return;
+          url.replace(/http(?:s):\/\/.+album\/([^/]+)(?:\/track\/)*(.*)/gm, (d, albumID, trackID) => {
+            if(albumID && trackID){
+              this.Iframe({path:path, type:attType, embed:{site:'yd', type:'track', url:`https://music.yandex.ru/iframe/#track/${trackID}/${albumID}`}});
+            }else
+            if(albumID && !trackID){
+              this.Iframe({path:path, type:attType, embed:{site:'yd', type:'album', url:`https://music.yandex.ru/iframe/#album/${albumID}`}});
+            }
+          })
+          return res;
+        }
+        default:
+          console.log(`Эмбед не поддерживается.`);
+      }
+    }
   }
-  let rW = {
+  let filter = {
     htm: '<(?:b|i|s|a)>',
     tag: '<(?:b|s)>|:(?:|g|i|s|e|sg|eg|album):|\\|\\|',
     text: '[^]+',
     sp: '\\|\\|',
-    scrTag: ':(?:e|eg|s|sg|i|g|emg|alb):',
+    scrTag: ':(?:e|eg|s|sg|i|g|emb|alb):',
     get search() {
-      return new RegExp(`(${this.htm}|${this.sp}|${this.scrTag})[^]+(${this.htm}|${this.sp}|${this.scrTag})`)
+      return new RegExp(`(${this.htm}|${this.sp}|${this.scrTag})[^]+(\\1)`)
     },
     get spl() {
       return new RegExp(`(${this.sp}[^]+${this.sp}|${this.scrTag}[^]*?${this.scrTag}|${this.htm}[^]+${this.htm})`, 'gmi')
     },
     get tags() {
       return new RegExp(`(${this.sp}|${this.scrTag}|${this.htm})([^]+)(\\1)`, 'gmi')
-    },
-    // tag: '<(?:b|i|s|a)>|:(?:|g|i|s|e|sg|eg|a|emb|alb):|\\|\\|',
-    // text: '[^]+',
-    get filter(){
-      return new RegExp(`(${rW.tag})(${rW.text}?)(${rW.tag})`, 'gmi')
-    },
-    get filter2(){
-      return new RegExp(`(${rW.tag})(${rW.text}?)(\\1)`, 'gmi')
-    },
-    get fix(){
-      return new RegExp(`((?:${rW.tag})(?:${rW.text})(?:${rW.tag}))`, 'gmi')
     }
   };
-  // let filter = new RegExp(`(${rW.tag})(${rW.text}?)(${rW.tag})`, 'gmi'),
-  // filter2 = new RegExp(`(${rW.tag})(${rW.text}?)(\\1)`, 'gmi'),
-  // fix = new RegExp(`((?:${rW.tag})(?:${rW.text})(?:${rW.tag}))`, 'gmi'),
-  // arr,
-  // num = 0,
-  // txt1;
-  // function splitter(text){
-  //   return text.split(fix);
-  // }
   function writer(t, path, first){
     function splitter(text){
-      return text.split(rW.spl).filter(e => !!e);
+      return text.split(filter.spl).filter(e => !!e);
     }
     if(first){
       path.textContent = '';
@@ -194,7 +239,7 @@ function attachmentsChecker(t, path){
     console.log('W', words);
 
     words.forEach(i => {
-      if(i && !i.match(rW.search)){
+      if(i && !i.match(filter.search)){
         new Attachment().P({
           path: path,
           type: 'p',
@@ -202,9 +247,9 @@ function attachmentsChecker(t, path){
         });
         // console.log(`new P (${i})`);
       }else
-      if (i.match(rW.search)) {
+      if (i.match(filter.search)) {
         // console.log(i)
-        i.replace(rW.tags, (d, op, text, ed) => {
+        i.replace(filter.tags, (d, op, text, ed) => {
           console.log(`[${op}] [${text}] [${ed}]`);
           switch(op && ed){
             case '||' && '||':
@@ -338,11 +383,10 @@ function attachmentsChecker(t, path){
             break;
             case ':emb:' && ':emb:': {
                 const enc = urlCoder.encoder(text);
-                if(enc.match(/youtube\.com|youtu\.be/) && mainCfg['attachments']['comments']['show']['embeds']['Youtube'])
-                new Attachment().Iframe({
+                new Attachment().urlCheck({
                   path: path,
                   url: enc,
-                  type: 'embed yt'
+                  attType: 'embed'
                 });
               }
             break;
@@ -358,10 +402,11 @@ function attachmentsChecker(t, path){
     })
   }
 
-  // if(t.match(rW.filter)){
+  // if(t.match(filter.filter)){
+    console.log(filter.search)
   for(let i = 0, p = path.children, pLength = p.length; i < pLength; i++){
     if(!p[i].nodeName === 'P') continue;
-    if(p[i].textContent.match(rW.filter)) writer(p[i].textContent.trim(), p[i], true);
+    if(p[i].textContent.match(filter.search)) writer(p[i].textContent.trim(), p[i], true) + console.log('Running');
     // console.log(path.children[i])
   }
     // path.children[0].textContent='';
