@@ -39,7 +39,7 @@ class EmojiPicker{
         }
       });
 
-      this.g=new Div({
+      let g=new Div({
         path: main,
         group: group,
         cName: 'emojiList',
@@ -50,11 +50,12 @@ class EmojiPicker{
           this.Emoji({
             url: emojisDB[group][e].url,
             name: e,
-            path: this.g,
+            path: g,
             type: emojisDB[group][e].type,
           });
         }
       };
+      if(!g.children.length > 0) main.classList.add('hidden');
     }
   }
   Emoji({path, name, url, type}){
@@ -87,7 +88,7 @@ class EmojiPicker{
       onclick: () => {
         let res = (() => {
           switch(this.emojiType.value){
-            case 'Emoji': return `:e:${mask.parentNode.getAttribute('group')}.${name}:e:`;
+            case 'Emoji': return `:eg:${mask.parentNode.getAttribute('group')}.${name}:eg:`;
             case 'Sticker': return `:sg:${mask.parentNode.getAttribute('group')}.${name}:sg:`
             case 'Image': return `:g:${mask.parentNode.getAttribute('group')}.${name}:g:`
             case 'Url': return emojisDB[mask.parentNode.getAttribute('group')][name].url;
@@ -262,7 +263,7 @@ class EmojiPicker{
     new Div({
       path: this.notAnimated,
       cName: 'title',
-      text: 'Не анимированы',
+      text: 'Обычные',
       onclick: (e) => {
         e.target.nextSibling.classList.toggle('hidden');
       }
@@ -281,7 +282,7 @@ class EmojiPicker{
     new Div({
       path: this.animated,
       cName: 'title',
-      text: 'Анимированы',
+      text: 'Анимированные',
       onclick: (e) => {
         e.target.nextSibling.classList.toggle('hidden');
       }
