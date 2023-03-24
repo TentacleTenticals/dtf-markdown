@@ -82,6 +82,9 @@ let emojiPickerCSS = `
   border-radius: 2px;
   box-shadow: 0px 0px 2px 1px rgb(137 137 137);
 }
+.emojiPicker .emojiGroup.hidden {
+  display: none;
+}
 .emojiPicker .groupName {
   /* text-align: center;
   font-size: 13px;
