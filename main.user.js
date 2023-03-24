@@ -3,7 +3,7 @@
 // @namespace    TentacleTenticals
 // @version      1.0
 // @description  Markdown for DTF
-// @author       You
+// @author       TentacleTenticals
 // @match        https://dtf.ru/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=dtf.ru
 // @homepage     https://github.com/TentacleTenticals/dtf-markdown
@@ -86,7 +86,7 @@
     initCfg = {
       func: () => {
         console.log('Встраивание инициализации в DTF-Markdown...');
-        
+
         new Css('test', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+emojiPickerCSS+gifPickerCSS);
         new Css('settingsLoader', menuLoaderCSS);
         // new MarkdownPanel(document.querySelector(`.comment-writing`), document.querySelector(`.comment-writing *:nth-child(1)`));
