@@ -1,6 +1,4 @@
-import {Div, Image, Video, Input, Select, List, Form, Field} from '../classes/main';
-
-export function setInfo(main, mainCfg){
+function setInfo(main, mainCfg){
   const preview=new Field({
     path: main,
     groupName: 'attachments',
