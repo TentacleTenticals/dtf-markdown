@@ -98,6 +98,7 @@ let albumCSS = (cfg) => {
   height: 105px;
   grid-template-columns: repeat(3, calc(${cfg['album']['items']['size']}px + ${cfg['album']['items']['padding']}px * 2));
   padding: 5px 6px 5px 6px;
+  margin: 5px;
   gap: 5px 10px;
   scroll-snap-type: y mandatory;
   overflow-y: auto;
@@ -130,11 +131,13 @@ let albumCSS = (cfg) => {
 .album:is(:not(.preview), .preview) .mask.spoiler:not(.picked)::after {
   display: block;
   content: 'SPOILER';
-  color: white;
-  background: black;
-  width: 100px;
   position: absolute;
+  background-color: rgb(0 0 0);
+  color: rgb(255 255 255);
+  width: calc(100px - 5px);
   text-align: center;
+  font-size: 12px;
+  line-height: 16px;
   z-index: 2;
   margin-top: 40px;
   box-shadow: inset 0px 0px 20px 0px rgb(102 102 102);
@@ -180,4 +183,4 @@ let albumCSS = (cfg) => {
   max-width: unset;
   max-height: unset;
 }`;
-}
+};
