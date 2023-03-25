@@ -6,12 +6,14 @@ let defaultSettings = {
         'onLoad': true
       },
       'show': {
+        'links': true,
         'emojis': true,
         'emojiGifs': true,
         'stickers': true,
         'stickerGifs': true,
         'gifs': true,
         'images': true,
+        'videos': true,
         'albums': true,
         'spoilers': true,
         '<b>': true,
@@ -31,15 +33,39 @@ let defaultSettings = {
       'stickerGif': 120,
       'gif': 150,
       'image': 150,
+      'video': 300,
       'embeds': {
         'Youtube': 300,
         'Spotify': 360,
         'Yandex': 300
       }
     },
+    'muted': {
+      'gif': true,
+      'emojiGif': true,
+      'stickerGif': true,
+      'video': false
+    },
+    'autoplay': {
+      'gif': false,
+      'emojiGif': true,
+      'stickerGif': false,
+      'video': false
+    },
+    'loop': {
+      'gif': true,
+      'emojiGif': true,
+      'stickerGif': true,
+      'video': false
+    },
+    'preload': {
+      'gif': 'metadata',
+      'emojiGif': 'metadata',
+      'stickerGif': 'metadata',
+      'video': 'metadata'
+    },
     'gif': {
       'show gif ico': true,
-      'autoplay': false,
       'mute': true,
       'pIp': false
     },
@@ -47,10 +73,14 @@ let defaultSettings = {
       'closed': {
         'attachments': {
           'blur': {
+            'text': 0,
+            'link': 5,
             'emoji': 10,
             'sticker': 10,
             'image': 10,
             'gif': 10,
+            'video': 5,
+            'album': 5,
             'embeds': {
               'Youtube': 5,
               'Spotify': 10,
