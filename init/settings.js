@@ -100,6 +100,70 @@ function setSettings(main, mainCfg){
       ]}
     });
 
+    new Field({
+      path: main,
+      groupName: 'attachments',
+      cName: 'grid',
+      legend: 'Вложения в комментариях (настройка)',
+      info: 'Автовоспроизведение',
+      rtn: [],
+      inputs: {c:{g:'autoplay'}, a:{cfg:mainCfg},
+        list:[
+          {
+            type: 'checkbox',
+            label: 'GIF смайлы',
+            name: 'emojiGif'
+          },
+          {
+            type: 'checkbox',
+            label: 'GIF стикеры',
+            name: 'stickerGif'
+          },
+          {
+            type: 'checkbox',
+            label: 'GIF',
+            name: 'gif'
+          },
+          {
+            type: 'checkbox',
+            label: 'Видео',
+            name: 'video'
+          }
+        ]}
+    });
+
+    new Field({
+      path: main,
+      groupName: 'attachments',
+      cName: 'grid',
+      legend: 'Вложения в комментариях (настройка)',
+      info: 'Предзагрузка',
+      rtn: [],
+      select: {c:{g:'preload'}, a:{cfg:mainCfg},
+        list:[
+          {
+            label: 'GIF смайлы',
+            name: 'emojiGif',
+            options: ['none', 'metadata', 'auto']
+          },
+          {
+            label: 'GIF стикеры',
+            name: 'stickerGif',
+            options: ['none', 'metadata', 'auto']
+          },
+          {
+            label: 'GIF',
+            name: 'gif',
+            options: ['none', 'metadata', 'auto']
+          },
+          {
+            label: 'Видео',
+            name: 'video',
+            options: ['none', 'metadata', 'auto']
+          }
+        ]}
+    });
+
   new Field({
     path: main,
     groupName: 'attachments',
@@ -144,7 +208,30 @@ function setSettings(main, mainCfg){
         type: 'number',
         label: 'Изображения',
         name: 'image'
-      }
+      },
+      {
+        type: 'number',
+        label: 'Видео',
+        name: 'video'
+      },
+      {
+        type: 'number',
+        label: 'Youtube',
+        name: 'Youtube',
+        c:{g:'size.embeds', n:'px'}
+      },
+      {
+        type: 'number',
+        label: 'Spotify',
+        name: 'Spotify',
+        c:{g:'size.embeds', n:'px'}
+      },
+      {
+        type: 'number',
+        label: 'Yandex',
+        name: 'Yandex',
+        c:{g:'size.embeds', n:'px'}
+      },
     ]}
   });
 
@@ -153,10 +240,20 @@ function setSettings(main, mainCfg){
     groupName: 'attachments',
     cName: 'grid',
     legend: 'Спойлеры (закрытые)',
-    info: 'Внешний вид закрытых спойлеров. BLur',
+    info: 'Внешний вид закрытых спойлеров. Blur',
     rtn: [],
     inputs: {c:{g:'spoiler.closed.attachments.blur', n:'px'}, a:{cfg:mainCfg},
       list:[
+        {
+          type: 'number',
+          label: 'Text',
+          name: 'text'
+        },
+        {
+          type: 'number',
+          label: 'Link',
+          name: 'link'
+        },
         {
           type: 'number',
           label: 'Emoji',
@@ -176,6 +273,16 @@ function setSettings(main, mainCfg){
           type: 'number',
           label: 'Image',
           name: 'image'
+        },
+        {
+          type: 'number',
+          label: 'Video',
+          name: 'video'
+        },
+        {
+          type: 'number',
+          label: 'Album',
+          name: 'album'
         },
         {
           type: 'number',
@@ -374,7 +481,16 @@ function setSettings(main, mainCfg){
         name: 'default mode',
         options: ['Emoji', 'Sticker', 'Image', 'Url']
       }
-    ]}
+    ]},
+    inputs: {c:true, a:{cfg:mainCfg},
+      list:[
+        {
+          type: 'checkbox',
+          label: 'Закрыть при выборе',
+          name: 'close after pick'
+        }
+      ]
+    }
   });
 
   new Field({
@@ -382,6 +498,7 @@ function setSettings(main, mainCfg){
     groupName: 'emoji picker',
     cName: 'grid',
     legend: 'Emoji Picker (группы смайлов)',
+    info: 'Какие группы смайлов/стикеров показывать в меню',
     inputs: {c:{g:'groups to show'}, a:{cfg:mainCfg},
       list: (() => {
         let groups = [];
@@ -430,7 +547,16 @@ function setSettings(main, mainCfg){
           }
         ]
       }
-    ]}
+    ]},
+    inputs: {c:true, a:{cfg:mainCfg},
+      list:[
+        {
+          type: 'checkbox',
+          label: 'Закрыть при выборе',
+          name: 'close after pick'
+        }
+      ]
+    }
   });
 
   new Field({
@@ -455,6 +581,27 @@ function setSettings(main, mainCfg){
 
   new Field({
     path: main,
+    groupName: 'album builder',
+    // cName: 'grid',
+    legend: 'Album Builder',
+    inputs: {c:true, a:{cfg:mainCfg},
+      list: [
+        {
+          type: 'checkbox',
+          label: 'Закрыть после сборки альбома',
+          name: 'close after pick'
+        },
+        {
+          type: 'checkbox',
+          label: 'Разрешить загрузку изображений',
+          name: 'allow items upload'
+        }
+      ]
+    }
+  });
+
+  new Field({
+    path: main,
     groupName: 'gif picker',
     // cName: 'grid',
     legend: 'Токены (Gfycat)',
@@ -463,24 +610,12 @@ function setSettings(main, mainCfg){
         {
           type: 'password',
           label: 'Client ID',
-          name: 'clientID',
-          // get c(){
-          //   return {g:'tokens.Gfycat'};
-          // },
-          // get value(){
-          //   return getter(mainCfg['gif picker'], this.c.g, this.name);
-          // }
+          name: 'clientID'
         },
         {
           type: 'password',
           label: 'client secret',
-          name: 'clientSecret',
-          // get c(){
-          //   return {g:'tokens.Gfycat'};
-          // },
-          // get value(){
-          //   return getter(mainCfg['gif picker'], this.c.g, this.name);
-          // }
+          name: 'clientSecret'
         }
       ]
     }
@@ -496,13 +631,23 @@ function setSettings(main, mainCfg){
         {
           type: 'password',
           label: 'Client secret',
-          name: 'clientSecret',
-          // get c(){
-          //   return {g:'tokens.Tenor'};
-          // },
-          // get value(){
-          //   return getter(mainCfg['gif picker'], this.c.g, this.name);
-          // }
+          name: 'clientSecret'
+        }
+      ]
+    }
+  });
+
+  new Field({
+    path: main,
+    groupName: 'album builder',
+    // cName: 'grid',
+    legend: 'Токены (ImgBB)',
+    inputs: {c:{g:'tokens.ImgBB'}, a:{cfg:mainCfg},
+      list: [
+        {
+          type: 'password',
+          label: 'Client token',
+          name: 'clientToken'
         }
       ]
     }
