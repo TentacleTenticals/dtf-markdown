@@ -118,16 +118,16 @@ let albumCSS = (cfg) => {
   scroll-snap-align: center;
   cursor: pointer;
 }
-.album:is(:not(.preview), .preview) .mask.spoiler img {
+.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked) img {
   filter: blur(10px);
 }
-.album:is(:not(.preview), .preview) .mask.spoiler:hover img {
+.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked):hover img {
   filter: none;
 }
-.album:is(:not(.preview), .preview) .mask.spoiler:hover::after {
+.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked):hover::after {
   display: none;
 }
-.album:is(:not(.preview), .preview) .mask.spoiler::after {
+.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked)::after {
   display: block;
   content: 'SPOILER';
   color: white;
