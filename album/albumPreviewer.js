@@ -2,6 +2,7 @@ class AlbumMiniPreviewer {
   constructor({path}){
     if(!document.getElementById('dtf-previewer')){
       this.dtfHeader=document.querySelector(`.site-header-container`);
+      this.dtfHeader.classList.add('hidden');
       this.main=new Div({
         path: path,
         cName: 'dtf-previewer',
