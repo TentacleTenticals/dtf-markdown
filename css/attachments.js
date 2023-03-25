@@ -123,9 +123,9 @@ let attachmentsCSS = (cfg) => {
 .dtf-attach.embed {
   display: inline-flex;
   position: relative;
-  background-position: center;
+  background-position: center !important;
   background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat !important;
   aspect-ratio: 1/0.5;
   overflow: hidden;
 }
@@ -139,7 +139,6 @@ let attachmentsCSS = (cfg) => {
   background-color: rgb(0 0 0);
   background-image: url(https://i.imgur.com/dAnyh1P.png);
   background-size: cover;
-  background-repeat: no-repeat;
   width: ${cfg['attachments']['size']['embeds']['Yandex']}px;
 }
 .dtf-attach.embed.yd .mediaStarter::before {
@@ -159,7 +158,6 @@ let attachmentsCSS = (cfg) => {
   background-color: rgb(0 0 0);
   background-image: url(https://i.imgur.com/zaX2aMO.png);
   background-size: 98%;
-  background-repeat: no-repeat;
   width: ${cfg['attachments']['size']['embeds']['Spotify']}px;
   border-radius: 15px;
   aspect-ratio: 1/0.422;
@@ -306,7 +304,7 @@ let attachmentsCSS = (cfg) => {
   /* justify-content: center; */
   align-items: center;
   z-index: 10;
-  /* cursor: pointer; */
+  cursor: pointer;
 }
 .mediaStarter .btn {
   display: flex;
