@@ -234,7 +234,7 @@ function attachmentsChecker(t, path){
     if(first){
       path.textContent = '';
       path.className = 'dtf-commentText';
-      t = t.replace(/(http(?:s)*:\/\/[^ ]+)(?= )/gm, '<a>$1<a>');
+      t = t.replace(/http(?:s):\/\/(.+)(?= )/gm, '<a>$1<a>');
     }
     const words = splitter(t);
     console.log('W', words);
@@ -286,7 +286,7 @@ function attachmentsChecker(t, path){
               });
             break;
             case '<a>' && '<a>': {
-              if(!mainCfg['attachments']['comments']['show']['<a>']) return;
+              if(!mainCfg['attachments']['comments']['show']['links']) return;
                 const enc = urlCoder.encoder(text);
                 new Attachment().A({
                   path: path,
