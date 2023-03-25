@@ -21,6 +21,13 @@ let mainCSS = `
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600;700&display=swap');
 
+.site-header-container {
+    z-index: 1;
+}
+.layout__right-column {
+    z-index: 0;
+}
+
 .comment-form {
   display: flex;
   flex-direction: column;
