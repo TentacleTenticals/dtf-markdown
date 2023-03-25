@@ -336,6 +336,12 @@ let attachmentsCSS = (cfg) => {
 .dtf-attach.embed.yt:hover .mediaStarter .btn {
   background-color: rgb(255 0 0);
 }
+.dtf-attach.embed.spt:hover .mediaStarter .btn {
+  background-color: rgb(255 0 0);
+}
+.dtf-attach.embed.yd:hover .mediaStarter .btn {
+  background-color: rgb(255 0 0);
+}
 
 .dtf-attach.playing .mediaStarter {
   display: none;
