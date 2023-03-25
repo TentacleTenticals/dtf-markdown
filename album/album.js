@@ -2,7 +2,7 @@ class Album {
   AlbumItem({path, url, text, spoiler}){
   let mask=new Div({
     path: path,
-    cName: `mask ${spoiler ? ' spoiler' : ''}`,
+    cName: `mask${spoiler ? ' spoiler' : ''}`,
     rtn: [],
     tab: -1,
     // onclick: (e) => {
