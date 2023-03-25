@@ -134,7 +134,7 @@ let albumCSS = (cfg) => {
   position: absolute;
   background-color: rgb(0 0 0);
   color: rgb(255 255 255);
-  width: calc(100px - 5px);
+  width: calc(${cfg['album']['items']['size']}px - ${cfg['album']['items']['padding']}px);
   text-align: center;
   font-size: 12px;
   line-height: 16px;
@@ -146,7 +146,7 @@ let albumCSS = (cfg) => {
 .album:is(:not(.preview), .preview) :is(.mask, .mask.spoiler) .buttonPanel {
   position: absolute;
   display: flex;
-  width: 100px;
+  width: ${cfg['album']['items']['size']}px;
   padding: 2px 0px 2px 0px;
   background-color: rgb(0 0 0 / 60%);
   z-index: 2;
