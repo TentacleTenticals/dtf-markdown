@@ -168,7 +168,7 @@ let albumCSS = (cfg) => {
 
 .album:is(:not(.preview), .preview) .mask.picked {
   width: 70%;
-  height: 99.3%;
+  height: calc(100% - 0px);
   top: 0px;
   left: 15%;
   position: fixed;
