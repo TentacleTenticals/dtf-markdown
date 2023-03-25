@@ -33,6 +33,7 @@ class Album {
         mainVars.picked.classList.remove('picked');
         mainVars.picked.classList.remove('zoomed');
         this.dtfHeader.classList.remove('hidden');
+        document.getElementById('dtf-previrwer')?.remove();
       }else
       if(e.code === 'ControlLeft'){
         mainVars.btnPressed.ctrl = true;
