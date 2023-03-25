@@ -31,6 +31,11 @@ function setSettings(main, mainCfg){
       list:[
         {
           type: 'checkbox',
+          label: 'Ссылки',
+          name: 'links'
+        },
+        {
+          type: 'checkbox',
           label: 'Смайлы',
           name: 'emojis'
         },
