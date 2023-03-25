@@ -21,7 +21,7 @@ let mainCSS = `
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600;700&display=swap');
 
-.site-header-container.hidden {
+:is(.site-header-container, .comments_updates_rail).hidden {
   display: none;
 }
 .layout__right-column {
