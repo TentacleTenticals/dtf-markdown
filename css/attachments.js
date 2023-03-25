@@ -44,6 +44,10 @@ let attachmentsCSS = (cfg) => {
   filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['link']}px) brightness(0.3);
 }
 
+.dtf-attach.spoiler:not(.opened) .dtf-attach.image img {
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['image']}px);
+}
+
 .dtf-attach.spoiler:not(.opened) .dtf-attach:is(.emoji, .emojiGif) :is(img, video) {
   filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['emoji']}px);
 }
@@ -52,6 +56,10 @@ let attachmentsCSS = (cfg) => {
 }
 .dtf-attach.spoiler:not(.opened) .dtf-attach.gif video {
   filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['gif']}px);
+}
+
+.dtf-attach.spoiler:not(.opened) .dtf-attach.video video {
+  filter: blur(${cfg['attachments']['spoiler']['closed']['attachments']['blur']['video']}px);
 }
 
 .dtf-attach.spoiler:not(.opened) .album {
@@ -198,6 +206,20 @@ let attachmentsCSS = (cfg) => {
   cursor: pointer;
 }
 .dtf-attach.gif video {
+  max-width: inherit;
+  max-height: inherit;
+  margin: auto;
+}
+
+.dtf-attach.video {
+  display: inline-flex;
+  position: relative;
+  max-width: ${cfg['attachments']['size']['video']}px;
+  max-height: ${cfg['attachments']['size']['video']}px;
+  box-shadow: 0px 0px 3px 1px rgb(0 0 0);
+  cursor: pointer;
+}
+.dtf-attach.video video {
   max-width: inherit;
   max-height: inherit;
   margin: auto;
