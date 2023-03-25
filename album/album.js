@@ -31,7 +31,7 @@ class Album {
         mainVars.picked.children[1].style.scale = '1';
         mainVars.picked.classList.remove('picked');
         mainVars.picked.classList.remove('zoomed');
-        // document.getElementById('dtf-previewer').remove();
+        document.getElementById('dtf-previewer')?.remove();
       }else
       if(e.code === 'ControlLeft'){
         mainVars.btnPressed.ctrl = true;
