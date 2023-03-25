@@ -1,6 +1,7 @@
 class AlbumMiniPreviewer {
   constructor({path}){
     if(!document.getElementById('dtf-previewer')){
+      this.dtfHeader=document.querySelector(`.site-header-container`);
       this.main=new Div({
         path: path,
         cName: 'dtf-previewer',
@@ -24,6 +25,8 @@ class AlbumMiniPreviewer {
             mainVars.picked.classList.remove('picked', 'zoomed');
             // mainVars.picked.classList.remove('zoomed');
             // this.main.remove();
+            this.dtfHeader.classList.remove('hidden');
+            this.main.remove();
           }else
           if(e.code === 'ControlLeft'){
             mainVars.btnPressed.ctrl = true;
