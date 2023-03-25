@@ -69,7 +69,7 @@ function attachmentsChecker(t, path){
         url: url
       });
     }
-    Gif({path, url, type, title}){
+    Gif({path, url, type, attType, title}){
       this.main=new Div({
         path: path,
         cName: `dtf-attach ${type}`,
@@ -81,7 +81,7 @@ function attachmentsChecker(t, path){
         }
       });
 
-      if(type.match(/^(gif|stickerGif) (s|ns)$/)){
+      if(attType.match(/^(gif|stickerGif|video)$/)){
         this.starter=new Div({
           path: this.main,
           cName: 'mediaStarter',
@@ -101,9 +101,10 @@ function attachmentsChecker(t, path){
         path: this.main,
         cName: type,
         url: url,
-        loop: true,
-        preload: type.match(/^(gif|stickerGif) (s|ns)$/) && 'metadata',
-        autoplay: type.match(/^(gif) (s|ns)$/) && mainCfg['attachments']['gif']['autoplay'] && true,
+        muted: mainCfg['attachments']['muted'][attType],
+        preload: mainCfg['attachments']['preload'][attType],
+        autoplay: mainCfg['attachments']['autoplay'][attType],
+        loop: mainCfg['attachments']['loop'][attType],
         onplay: (e) => {
           e.target.parentNode.classList.toggle('playing');
         },
@@ -212,10 +213,10 @@ function attachmentsChecker(t, path){
   }
   let filter = {
     htm: '<(?:b|i|s|a)>',
-    tag: '<(?:b|s)>|:(?:|g|i|s|e|sg|eg|album):|\\|\\|',
+    tag: '<(?:b|s)>|:(?:|g|i|s|e|sg|eg|v|album):|\\|\\|',
     text: '[^]+',
     sp: '\\|\\|',
-    scrTag: ':(?:e|eg|s|sg|i|g|emb|alb):',
+    scrTag: ':(?:e|eg|s|sg|i|g|v|emb|alb):',
     get search() {
       return new RegExp(`(${this.htm}|${this.sp}|${this.scrTag})[^]+(\\1)`)
     },
@@ -253,6 +254,7 @@ function attachmentsChecker(t, path){
           console.log(`[${op}] [${text}] [${ed}]`);
           switch(op && ed){
             case '||' && '||':
+              if(!mainCfg['attachments']['comments']['show']['spoilers']) return;
               new Attachment().Spoiler({
                 path: path,
                 type: 'spoiler',
@@ -260,6 +262,7 @@ function attachmentsChecker(t, path){
               });
             break;
             case '<b>' && '<b>':
+              if(!mainCfg['attachments']['comments']['show']['<b>']) return;
               new Attachment().B({
                 path: path,
                 type: 'b',
@@ -267,6 +270,7 @@ function attachmentsChecker(t, path){
               });
             break;
             case '<i>' && '<i>':
+              if(!mainCfg['attachments']['comments']['show']['<i>']) return;
               new Attachment().I({
                 path: path,
                 type: 'spoiler',
@@ -274,6 +278,7 @@ function attachmentsChecker(t, path){
               });
             break;
             case '<s>' && '<s>':
+              if(!mainCfg['attachments']['comments']['show']['<s>']) return;
               new Attachment().S({
                 path: path,
                 type: 's',
@@ -281,6 +286,7 @@ function attachmentsChecker(t, path){
               });
             break;
             case '<a>' && '<a>': {
+              if(!mainCfg['attachments']['comments']['show']['<a>']) return;
                 const enc = urlCoder.encoder(text);
                 new Attachment().A({
                   path: path,
@@ -310,6 +316,7 @@ function attachmentsChecker(t, path){
             // }
             // break;
             case ':e:' && ':e:':
+              if(!mainCfg['attachments']['comments']['show']['emojis']) return;
               if(text.match(/\./)){
                 let emj = text.split('.');
                 if(!emojisDB[emj[0]][emj[1]]) return;
@@ -326,8 +333,30 @@ function attachmentsChecker(t, path){
                   type: 'emoji ns'
                 });
               }
-              break;
+            break;
+            case ':eg:' && ':eg:':
+              if(!mainCfg['attachments']['comments']['show']['emojiGifs']) return;
+              if(text.match(/\./)){
+                let emj = text.split('.');
+                if(!emojisDB[emj[0]][emj[1]]) return;
+                new Attachment().Gif({
+                  path: path,
+                  url: emojisDB[emj[0]][emj[1]].url,
+                  title: `${emj[0]}:${emj[1]}`,
+                  type: 'emojiGif s',
+                  attType: 'emojiGif'
+                });
+              }else{
+                new Attachment().Gif({
+                  path: path,
+                  url: urlCoder.encoder(text),
+                  type: 'emojiGif ns',
+                  attType: 'emojiGif'
+                });
+              }
+            break;
             case ':s:' && ':s:':
+              if(!mainCfg['attachments']['comments']['show']['stickers']) return;
               if(text.match(/\./)){
                 let emj = text.split('.');
                 if(!emojisDB[emj[0]][emj[1]]) return;
@@ -346,6 +375,7 @@ function attachmentsChecker(t, path){
               }
             break;
             case ':sg:' && ':sg:':
+              if(!mainCfg['attachments']['comments']['show']['stickerGifs']) return;
               if(text.match(/\./)){
                 let emj = text.split('.');
                 if(!emojisDB[emj[0]][emj[1]]) return;
@@ -353,17 +383,20 @@ function attachmentsChecker(t, path){
                   path: path,
                   url:`https://thumbs.gfycat.com/${gifsDB[emj[0]][emj[1]].gifId}-mobile.mp4`,
                   title: `${emj[0]}:${emj[1]}`,
-                  type: 'stickerGif s'
+                  type: 'stickerGif s',
+                  attType: 'stickerGif'
                 });
               }else{
                 new Attachment().Gif({
                   path: path,
                   url: urlCoder.encoder(text),
-                  type: 'stickerGif ns'
+                  type: 'stickerGif ns',
+                  attType: 'stickerGif'
                 });
               }
             break;
             case ':g:' && ':g:':
+              if(!mainCfg['attachments']['comments']['show']['gifs']) return;
               if(text.match(/\./)){
                 let emj = text.split('.');
                 if(!gifsDB[emj[0]][emj[1]]) return;
@@ -371,15 +404,45 @@ function attachmentsChecker(t, path){
                   path: path,
                   url: `https://thumbs.gfycat.com/${gifsDB[emj[0]][emj[1]].gifId}-mobile.mp4`,
                   title: `${emj[0]}:${emj[1]}`,
-                  type: 'gif s'
+                  type: 'gif s',
+                  attType: 'gif'
                 });
               }else{
                 new Attachment().Gif({
                   path: path,
                   url: urlCoder.encoder(text),
-                  type: 'gif ns'
+                  type: 'gif ns',
+                  attType: 'gif'
                 });
               }
+            break;
+            case ':i:' && ':i:':
+              if(!mainCfg['attachments']['comments']['show']['images']) return;
+              if(text.match(/\./)){
+                let emj = text.split('.');
+                if(!emojisDB[emj[0]][emj[1]]) return;
+                new Attachment().Emoji({
+                  path: path,
+                  url: emojisDB[emj[0]][emj[1]].url,
+                  title: `${emj[0]}:${emj[1]}`,
+                  type: 'image'
+                });
+              }else{
+                new Attachment().Emoji({
+                  path: path,
+                  url: urlCoder.encoder(text),
+                  type: 'image'
+                });
+              }
+            break;
+            case ':v:' && ':v:':
+              if(!mainCfg['attachments']['comments']['show']['videos']) return;
+              new Attachment().Gif({
+                path: path,
+                url: urlCoder.encoder(text),
+                type: 'video',
+                attType: 'video'
+              });
             break;
             case ':emb:' && ':emb:': {
                 const enc = urlCoder.encoder(text);
@@ -391,6 +454,7 @@ function attachmentsChecker(t, path){
               }
             break;
             case ':alb:' && ':alb:':
+              if(!mainCfg['attachments']['comments']['show']['albums']) return;
               new Album({
                 path: path,
                 albumArr: JSON.parse(text.replace(/&amp;/gm, '&'))
