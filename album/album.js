@@ -32,7 +32,7 @@ class Album {
         mainVars.picked.classList.remove('picked');
         mainVars.picked.classList.remove('zoomed');
         this.dtfHeader.classList.remove('hidden');
-        document.getElementById('dtf-previrwer')?.remove();
+        document.getElementById('dtf-previewer')?.remove();
         document.querySelector(`.site-header-container`).classList.remove('hidden');
       }else
       if(e.code === 'ControlLeft'){
