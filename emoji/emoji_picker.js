@@ -157,8 +157,9 @@ class EmojiPicker{
       name: 'search',
       id: 'search',
       type: 'text',
+      placeholder: 'Введите название смайла',
       // list: 'yo',
-      rtn: true,
+      rtn: [],
       style: `display: flex;
       margin-top: 3px;`,
       onchange: (e) => {
@@ -169,7 +170,7 @@ class EmojiPicker{
       }
     });
     // console.log($( "#search" )[0])
-    $( "#search" ).autocomplete({
+    $(this.search).autocomplete({
       delay: 500,
       source: (() => {
         let arr = [];
@@ -185,7 +186,7 @@ class EmojiPicker{
       select: (e, ui) => {
         setTimeout(() => {
           if(!e.target.value) return;
-          if(document.querySelector(`.emojiMask[name=${e.target.value}]`)) document.querySelector(`.emojiMask[name=${e.target.value}]`).focus();
+          if(this.main.querySelector(`.emojiMask[name=${e.target.value}]`)) this.main.querySelector(`.emojiMask[name=${e.target.value}]`).focus();
         }, 100)
         // console.log(e.val())
         // console.log(ui)
