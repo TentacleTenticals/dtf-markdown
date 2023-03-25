@@ -9,6 +9,7 @@ class Album {
     //   e.target.focus();
     // },
     onfocus: (e) => {
+      this.dtfHeader.classList.add('hidden');
       e.target.classList.add('picked');
       mainVars.picked = e.target;
       new AlbumMiniPreviewer({
@@ -31,9 +32,8 @@ class Album {
         mainVars.picked.children[1].style.scale = '1';
         mainVars.picked.classList.remove('picked');
         mainVars.picked.classList.remove('zoomed');
-        this.dtfHeader.classList.remove('hidden');
         document.getElementById('dtf-previewer')?.remove();
-        document.querySelector(`.site-header-container`).classList.remove('hidden');
+        this.dtfHeader.classList.remove('hidden');
       }else
       if(e.code === 'ControlLeft'){
         mainVars.btnPressed.ctrl = true;
@@ -106,6 +106,7 @@ class Album {
   });
 }
   constructor({path, type, albumArr, rtn}){
+    this.dtfHeader=document.querySelector(`.site-header-container`);
     this.main=new Div({
       path: path,
       cName: `album${type ? ` ${type}` : ''}`,
