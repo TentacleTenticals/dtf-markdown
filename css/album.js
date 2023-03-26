@@ -1,6 +1,6 @@
-let albumCSS = (cfg) => {
+export let albumCSS = (cfg) => {
   return `
-.album:is(:not(.preview), .preview) {
+.dtf-attach.albumMini:is(:not(.preview), .preview) {
   background: black;
   width: max-content;
   height: max-content;
@@ -9,7 +9,7 @@ let albumCSS = (cfg) => {
   flex-direction: column;
   box-shadow: inset 0px 0px 3px 1px rgb(165 214 247);
 }
-.album:is(:not(.preview), .preview) .header {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .header {
   display: flex;
   flex-direction: column;
   background-color: rgb(40 40 40);
@@ -24,7 +24,7 @@ let albumCSS = (cfg) => {
   margin: 5px auto 0px auto;
   box-shadow: 0px 0px 2px 0px rgb(255 255 255);
 }
-.album:is(:not(.preview), .preview) .header .num {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .header .num {
   position: absolute;
   top: 1px;
   left: 1px;
@@ -34,7 +34,7 @@ let albumCSS = (cfg) => {
   border-radius: 0px 10px 3px 0px;
   box-shadow: inset 0px 0px 3px 2px rgb(104 29 67);
 }
-/* .album:is(:not(.preview), .preview) .header .label {
+/* .dtf-attach.albumMini:is(:not(.preview), .preview) .header .label {
   display: flex;
   background-color: rgb(16 44 52);
   width: max-content;
@@ -43,12 +43,12 @@ let albumCSS = (cfg) => {
   margin: auto;
   z-index: 10;
 } */
-.album:is(:not(.preview), .preview) .header .label {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .header .label {
   font-size: 13px;
   font-family: 'Chakra Petch', sans-serif;
   letter-spacing: 0.5px;
 }
-/* .album:is(:not(.preview), .preview) .header .label::before {
+/* .dtf-attach.albumMini:is(:not(.preview), .preview) .header .label::before {
   display: inline;
   content: '';
   color: black;
@@ -59,7 +59,7 @@ let albumCSS = (cfg) => {
   height: 1px;
   position: relative;
 }
-.album:is(:not(.preview), .preview) .header .label::after {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .header .label::after {
   display: inline;
   content: '';
   color: black;
@@ -70,7 +70,7 @@ let albumCSS = (cfg) => {
   height: 1px;
   position: relative;
 } */
-.album:is(:not(.preview), .preview) .header .label::before {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .header .label::before {
   display: inline-block;
   content: '';
   color: black;
@@ -81,7 +81,7 @@ let albumCSS = (cfg) => {
   position: relative;
   box-shadow: 0px 0px 1px 1px rgb(185 0 87);
 }
-.album:is(:not(.preview), .preview) .header .label::after {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .header .label::after {
   display: inline-block;
   content: '';
   color: black;
@@ -92,7 +92,7 @@ let albumCSS = (cfg) => {
   position: relative;
   box-shadow: 0px 0px 1px 1px rgb(185 0 87);
 }
-.album .list {
+.dtf-attach.albumMini .list {
   display: grid;
   background-color: ${cfg['album']['list']['background']};
   height: 105px;
@@ -103,11 +103,11 @@ let albumCSS = (cfg) => {
   scroll-snap-type: y mandatory;
   overflow-y: auto;
 }
-.album:is(:not(.preview)) .list {
+.dtf-attach.albumMini:is(:not(.preview)) .list {
   grid-template-columns: repeat(4, calc(${cfg['album']['items']['size']}px + ${cfg['album']['items']['padding']}px * 2));
 }
 
-.album:is(:not(.preview), .preview) :is(.mask, .mask.spoiler) {
+.dtf-attach.albumMini:is(:not(.preview), .preview) :is(.mask, .mask.spoiler) {
   flex-direction: column;
   width: ${cfg['album']['items']['size']}px;
   height: ${cfg['album']['items']['size']}px;
@@ -119,16 +119,16 @@ let albumCSS = (cfg) => {
   scroll-snap-align: center;
   cursor: pointer;
 }
-.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked) img {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .mask.spoiler:not(.picked) img {
   filter: blur(10px);
 }
-.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked):hover img {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .mask.spoiler:not(.picked):hover img {
   filter: none;
 }
-.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked):hover::after {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .mask.spoiler:not(.picked):hover::after {
   display: none;
 }
-.album:is(:not(.preview), .preview) .mask.spoiler:not(.picked)::after {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .mask.spoiler:not(.picked)::after {
   display: block;
   content: 'SPOILER';
   position: absolute;
@@ -143,7 +143,7 @@ let albumCSS = (cfg) => {
   box-shadow: inset 0px 0px 20px 0px rgb(102 102 102);
 }
 
-.album:is(:not(.preview), .preview) :is(.mask, .mask.spoiler) .buttonPanel {
+.dtf-attach.albumMini:is(:not(.preview), .preview) :is(.mask, .mask.spoiler) .buttonPanel {
   position: absolute;
   display: flex;
   width: ${cfg['album']['items']['size']}px;
@@ -155,13 +155,13 @@ let albumCSS = (cfg) => {
   gap: 0px 5px;
   cursor: default;
 }
-.album:is(:not(.preview), .preview)
+.dtf-attach.albumMini:is(:not(.preview), .preview)
   :is(.mask, .mask.spoiler)
   .buttonPanel:hover {
   opacity: 1;
 }
 
-.album:is(:not(.preview), .preview) .mask img {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .mask img {
   max-width: calc(100px - 6px);
   max-height: calc(100px - 6px);
   position: relative;
@@ -169,7 +169,7 @@ let albumCSS = (cfg) => {
   transform-origin: 0% 0%;
 }
 
-.album:is(:not(.preview), .preview) .mask.picked {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .mask.picked {
   width: 70%;
   height: calc(100% - 0px);
   top: 0px;
@@ -179,7 +179,7 @@ let albumCSS = (cfg) => {
   overflow: auto;
   z-index: 11;
 }
-.album:is(:not(.preview), .preview) .mask.picked img {
+.dtf-attach.albumMini:is(:not(.preview), .preview) .mask.picked img {
   max-width: unset;
   max-height: unset;
 }`;
