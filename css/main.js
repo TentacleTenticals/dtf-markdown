@@ -356,7 +356,7 @@ html .ui-autocomplete {
   padding: 3px;
   margin: 5px 0 0 0;
   border-radius: 2px;
-  box-shadow: 0px 0px 3px 0px rgb(0 0 0);
+  box-shadow: 0px 0px 3px 0px rgb(0 0 0), 0px 1px 3px 0px rgb(255 255 255);
   z-index: 15;
 }
 .dtf-window .header {
