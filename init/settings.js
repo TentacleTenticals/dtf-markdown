@@ -548,7 +548,7 @@ function setSettings(main, mainCfg){
           },
           {
             label: 'URLs',
-            options: ['gif URL', 'image URL', 'video URL']
+            options: ['GIF link', 'Video link', 'Image link']
           }
         ]
       }
