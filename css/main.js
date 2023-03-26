@@ -348,6 +348,7 @@ html .ui-autocomplete {
   flex-direction: column;
   width: max-content;
   background-color: black;
+  top: 100%;
   padding: 3px;
   margin: 5px 0 0 0;
   border-radius: 2px;
