@@ -25,6 +25,7 @@ class MarkdownPanel {
     }
   }
   constructor(path, addBefore) {
+    this.windowsPath=document.querySelector(`div[class='comment-writing'] .thesis__panel`);
     this.main=new Div({
       path: path,
       cName: 'dtf-markdownPanel',
@@ -34,7 +35,7 @@ class MarkdownPanel {
       rtn: []
     });
 
-    if(mainCfg['markdown panel']['buttons']['spoiler']) this.bSpoiler=new Button({
+    if(mainCfg['markdown panel']['buttons']['spoiler']) new Button({
       path: this.main,
       cName: 'button',
       text: 'Sp',
@@ -42,7 +43,7 @@ class MarkdownPanel {
         this.Modify('||', '||');
       }
     });
-    if(mainCfg['markdown panel']['buttons']['<b>']) this.bBold=new Button({
+    if(mainCfg['markdown panel']['buttons']['<b>']) new Button({
       path: this.main,
       cName: 'button',
       text: 'B',
@@ -50,7 +51,7 @@ class MarkdownPanel {
         this.Modify('<b>', '<b>');
       }
     });
-    if(mainCfg['markdown panel']['buttons']['<i>']) this.bIdio=new Button({
+    if(mainCfg['markdown panel']['buttons']['<i>']) new Button({
       path: this.main,
       cName: 'button',
       text: 'i',
@@ -58,7 +59,7 @@ class MarkdownPanel {
         this.Modify('<i>', '<i>');
       }
     });
-    if(mainCfg['markdown panel']['buttons']['<s>']) this.bStrike=new Button({
+    if(mainCfg['markdown panel']['buttons']['<s>']) new Button({
       path: this.main,
       cName: 'button',
       text: 'S',
@@ -66,60 +67,60 @@ class MarkdownPanel {
         this.Modify('<s>', '<s>');
       }
     });
-    if(mainCfg['markdown panel']['buttons']['album']) this.bAlbum=new Button({
+    if(mainCfg['markdown panel']['buttons']['album']) new Button({
       path: this.main,
       cName: 'button',
       text: '🖼️',
       onclick: () => {
-        new AlbumBuilder(document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new AlbumBuilder(this.windowsPath);
       }
     });
-    if(mainCfg['markdown panel']['buttons']['emoji']) this.bAlbum=new Button({
+    if(mainCfg['markdown panel']['buttons']['emoji']) new Button({
       path: this.main,
       cName: 'button',
       text: '😉',
       onclick: () => {
-        new EmojiPicker(document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new EmojiPicker(this.windowsPath);
       }
     });
-    if(mainCfg['markdown panel']['buttons']['gif']['slots']['a']) this.bGif=new Button({
+    if(mainCfg['markdown panel']['buttons']['gif']['slots']['a']) new Button({
       path: this.main,
       cName: 'button',
       text: mainCfg['markdown panel']['buttons']['gif']['modes']['a'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['a'],
       onclick: () => {
-        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['a'], document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['a'], this.windowsPath);
       }
     });
-    if(mainCfg['markdown panel']['buttons']['gif']['slots']['b']) this.bGif2=new Button({
+    if(mainCfg['markdown panel']['buttons']['gif']['slots']['b']) new Button({
       path: this.main,
       cName: 'button',
       text: mainCfg['markdown panel']['buttons']['gif']['modes']['b'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['b'],
       onclick: () => {
-        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['b'], document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['b'], this.windowsPath);
       }
     });
-    if(mainCfg['markdown panel']['buttons']['gif']['slots']['c']) this.bGif3=new Button({
+    if(mainCfg['markdown panel']['buttons']['gif']['slots']['c']) new Button({
       path: this.main,
       cName: 'button',
       text: mainCfg['markdown panel']['buttons']['gif']['modes']['c'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['c'],
       onclick: () => {
-        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['c'], document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['c'], this.windowsPath);
       }
     });
-    if(mainCfg['markdown panel']['buttons']['lk']) this.bLinkConverter=new Button({
+    if(mainCfg['markdown panel']['buttons']['lk']) new Button({
       path: this.main,
       cName: 'button',
       text: 'LK',
       onclick: () => {
-        new LinkConverter(document.querySelector(`div[class='comment-writing'] .thesis__panel`));
+        new LinkConverter(this.windowsPath);
       }
     });
-    new Button({
+    if(mainCfg['markdown panel']['buttons']['comment preview']) new Button({
       path: this.main,
       cName: 'button',
       text: 'Preview',
       onclick: () => {
-        new CommentPreviewer(document.querySelector(`.comment-writing .thesis__panel`), document.querySelector(`.comment-writing .content_editable`).textContent.trim());
+        new CommentPreviewer(this.windowsPath, document.querySelector(`.comment-writing .content_editable`).textContent.trim());
       }
     });
   }
