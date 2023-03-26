@@ -34,9 +34,7 @@ let albumBuilderCSS = `
   box-shadow: 0px 1px rgb(0 0 0);
   width: calc(100% - 6px);
 }
-.dtf-albumBuilder :is(.contUrl, .contText):hover::after {
-  opacity: 0;
-}
+
 .dtf-albumBuilder .container {
   display: flex;
   flex-direction: column;
@@ -44,30 +42,10 @@ let albumBuilderCSS = `
   gap: 5px 5px;
   box-shadow: 0px 0px 2px 1px rgb(255 255 255);
 }
-.dtf-albumBuilder :is(.contUrl, .contText)::after {
-  display: block;
-  background: rgb(0 0 0);
-  /* content: ''; */
-  color: white;
-  line-height: unset;
-  font-size: 13px;
-  font-family: 'Teko', sans-serif;
-  width: 27px;
-  margin: -19px 5px 0px 0px;
-  padding: 0px 0px 1px 3px;
-  left: 0;
-  position: relative;
-}
 
 /* .dtf-albumBuilder .contText {
   margin: 2px 0px 0px 0px;
 } */
-.dtf-albumBuilder .contUrl::after {
-  content: 'URL';
-}
-.dtf-albumBuilder .contText::after {
-  content: 'TEXT';
-}
 /* .dtf-albumBuilder .contSpoiler {
   margin: 0px 0px 4px 0px;
 } */
