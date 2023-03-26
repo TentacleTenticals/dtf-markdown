@@ -64,52 +64,41 @@
 
       if(arr[0] && arr[0].match(/^popular$/)){
         if(!arr[1]) {
-          // console.log('Popular');
           return 'popular';
         }
-      }
-
+      }else
       if(arr[0] && arr[0].match(/^new$/)){
         if(!arr[1]) {
-          // console.log('Popular');
           return 'new';
         }
-      }
-
+      }else
       if(arr[0] && arr[0].match(/^my$/)){
         if(arr[1] && arr[1].match(/^new$/)) {
-          // console.log('Popular');
           return 'my new';
         }
-      }
+      }else
 
       if(arr[0] && arr[0].match(/^u$/)){
         if(arr[1] && !arr[2]) {
-          // console.log('User');
           return 'user pages';
         }
         if(arr[1] && arr[2]) {
-          // console.log('User blog');
           return 'topics';
         }
-      }
+      }else
       if(arr[0] && arr[0].match(/^s$/)){
         if(arr[1] && !arr[2]) {
-          // console.log('Subsite');
           return 'subsites';
         }
         if(arr[1] && arr[2]) {
-          // console.log('Subsite topic');
           return 'topics';
         }
-      }
+      }else
       if(arr[0] && !arr[0].match(/^(u|s)$/)){
         if(arr[0] && !arr[1]) {
-          // console.log('DTF subsite');
           return 'subsites';
         }
         if(arr[0] && arr[1]) {
-          // console.log('DTF subsite Topic');
           return 'topics';
         }
       }
