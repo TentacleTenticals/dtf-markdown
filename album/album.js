@@ -112,7 +112,7 @@ class Album {
     this.dtfCommentRail=document.querySelector(`.comments_updates_rail`);
     this.main=new Div({
       path: path,
-      cName: `album${type ? ` ${type}` : ''}`,
+      cName: `dtf-attach albumMini${type ? ` ${type}` : ''}`,
       rtn: []
     });
 
