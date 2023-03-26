@@ -38,6 +38,10 @@ let mainCSS = `
   min-height: 100px;
 }
 
+.dtf-window input {
+  outline: none;
+}
+
 .container.px label::before {
   display: inline;
   content: 'px';
