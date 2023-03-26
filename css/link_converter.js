@@ -1,4 +1,21 @@
 let linkConverterCSS = `
+.linkConverter .btn {
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgb(90 90 90) 0%,
+    rgb(30 30 30) 50%,
+    rgb(90 90 90) 100%
+  );
+  background-color: rgb(0 0 0);
+  color: rgb(215 212 212);
+  margin: 0px auto 6px auto;
+  border-radius: 3px;
+  box-shadow: inset 0 0 2px 0px rgb(255 255 255);
+}
+.linkConverter .btn:hover {
+  filter: brightness(1.1);
+}
+
 .linkConverter form {
   display: flex;
   flex-direction: row;
