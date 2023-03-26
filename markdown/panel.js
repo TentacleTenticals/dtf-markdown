@@ -26,7 +26,7 @@ class MarkdownPanel {
   }
   constructor(path, addBefore) {
     if(document.getElementById('dtf-markdownPanel')) return;
-    this.windowsPath=document.querySelector(`.comment-writing`);
+//     this.windowsPath=document.querySelector(`.comment-writing .thesis__panel`);
     this.main=new Div({
       path: path,
       cName: 'dtf-markdownPanel',
@@ -73,7 +73,7 @@ class MarkdownPanel {
       cName: 'button',
       text: '🖼️',
       onclick: () => {
-        new AlbumBuilder(this.windowsPath);
+        new AlbumBuilder(document.querySelector(`.comment-writing .thesis__panel`));
       }
     });
     if(mainCfg['markdown panel']['buttons']['emoji']) new Button({
@@ -81,7 +81,7 @@ class MarkdownPanel {
       cName: 'button',
       text: '😉',
       onclick: () => {
-        new EmojiPicker(this.windowsPath);
+        new EmojiPicker(document.querySelector(`.comment-writing .thesis__panel`));
       }
     });
     if(mainCfg['markdown panel']['buttons']['gif']['slots']['a']) new Button({
@@ -89,7 +89,7 @@ class MarkdownPanel {
       cName: 'button',
       text: mainCfg['markdown panel']['buttons']['gif']['modes']['a'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['a'],
       onclick: () => {
-        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['a'], this.windowsPath);
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['a'], document.querySelector(`.comment-writing .thesis__panel`));
       }
     });
     if(mainCfg['markdown panel']['buttons']['gif']['slots']['b']) new Button({
@@ -97,7 +97,7 @@ class MarkdownPanel {
       cName: 'button',
       text: mainCfg['markdown panel']['buttons']['gif']['modes']['b'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['b'],
       onclick: () => {
-        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['b'], this.windowsPath);
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['b'], document.querySelector(`.comment-writing .thesis__panel`));
       }
     });
     if(mainCfg['markdown panel']['buttons']['gif']['slots']['c']) new Button({
@@ -105,7 +105,7 @@ class MarkdownPanel {
       cName: 'button',
       text: mainCfg['markdown panel']['buttons']['gif']['modes']['c'] === 'Default' ? 'GIF' : mainCfg['markdown panel']['buttons']['gif']['modes']['c'],
       onclick: () => {
-        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['c'], this.windowsPath);
+        new GifSearch(mainCfg['markdown panel']['buttons']['gif']['modes']['c'], document.querySelector(`.comment-writing .thesis__panel`));
       }
     });
     if(mainCfg['markdown panel']['buttons']['lk']) new Button({
@@ -113,7 +113,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'LK',
       onclick: () => {
-        new LinkConverter(this.windowsPath);
+        new LinkConverter(document.querySelector(`.comment-writing .thesis__panel`));
       }
     });
     if(mainCfg['markdown panel']['buttons']['comment preview']) new Button({
@@ -121,7 +121,7 @@ class MarkdownPanel {
       cName: 'button',
       text: 'Preview',
       onclick: () => {
-        new CommentPreviewer(this.windowsPath, document.querySelector(`.comment-writing .content_editable`).textContent.trim());
+        new CommentPreviewer(document.querySelector(`.comment-writing .thesis__panel`), document.querySelector(`.comment-writing .content_editable`).textContent.trim());
       }
     });
   }
