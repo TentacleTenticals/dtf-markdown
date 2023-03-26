@@ -144,7 +144,7 @@
         // Пример перезаписи стандартных настроек. mainCfg['album builder']['close after pick'] = false;
         // mainCfg['album builder']['close after pick'] = false;
 
-        new Css('DTF-Markdown', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+emojiPickerCSS+gifPickerCSS);
+        new Css('DTF-Markdown', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+albumBuilderCSS+emojiPickerCSS+gifPickerCSS+linkConverterCSS);
         new Css('settingsLoader', menuLoaderCSS);
         // new MarkdownPanel(document.querySelector(`.comment-writing`), document.querySelector(`.comment-writing *:nth-child(1)`));
       }
