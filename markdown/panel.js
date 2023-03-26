@@ -25,9 +25,7 @@ class MarkdownPanel {
     }
   }
   constructor(path, addBefore) {
-    this.windowsPath=document.querySelector(`div[class='comment-writing'] .thesis__panel`);
-    console.log('PATH', document.querySelector(`div[class='comment-writing'] .thesis__panel`))
-    console.log('PATH2', document.querySelector(`.comment-writing`))
+    this.windowsPath=document.querySelector(`.comment-writing`);
     this.main=new Div({
       path: path,
       cName: 'dtf-markdownPanel',
