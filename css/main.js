@@ -38,7 +38,7 @@ let mainCSS = `
   min-height: 100px;
 }
 
-.dtf-window input {
+.dtf-window :is(input, select) {
   outline: none;
 }
 
