@@ -1,5 +1,6 @@
 class LinkConverter{
   Selection(){
+    if(!window.getSelection().focusNode) return;
     if(!window.getSelection().focusNode.isContentEditable && !window.getSelection().focusNode.parentNode.isContentEditable) return console.log('Wrong element', window.getSelection().focusNode);
     this.sel = {
       s: window.getSelection().focusNode.textContent.substring(0, window.getSelection().anchorOffset),
@@ -90,6 +91,7 @@ class LinkConverter{
             case 'sticker': return `:s:${urlCoder.decoder(this.input.value)}:s:`;
             case 'emojiGif': return `:eg:${urlCoder.decoder(this.input.value)}:eg:`;
             case 'stickerGif': return `:sg:${urlCoder.decoder(this.input.value)}:sg:`;
+            case 'video': return `:v:${urlCoder.decoder(this.input.value)}:v:`;
             case 'embed': return `:emb:${urlCoder.decoder(this.input.value)}:emb:`;
             case 'link': return `<a>${urlCoder.decoder(this.input.value)}<a>`;
             case 'url': return urlCoder.decoder(this.input.value);
@@ -124,6 +126,10 @@ class LinkConverter{
         {
           label: 'Embeds',
           option: 'embed'
+        },
+        {
+          label: 'Videos',
+          option: 'video'
         },
         {
           label: 'Links',
