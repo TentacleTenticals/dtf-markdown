@@ -11,7 +11,6 @@
 // @downloadURL  https://github.com/TentacleTenticals/dtf-markdown/raw/master/main.user.js
 // @grant        none
 //
-// @require https://cdn.jsdelivr.net/npm/luxon@1.22.2/build/global/luxon.min.js
 // @require https://code.jquery.com/jquery-3.3.1.min.js
 // @require https://code.jquery.com/ui/1.12.1/jquery-ui.js
 //
@@ -35,11 +34,11 @@
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/init/info.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/init/settings.js
 //
-// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/cfg/cfg.js
+// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/vars/cfg.js
 //
 // @require https://github.com/TentacleTenticals/dtf-libs-2.0/raw/main/libs/main%20classes.js
 
-// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/markdown/panel.js
+// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/markdown/panel.js?
 
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/album/album.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/album/albumBuilder.js
@@ -59,8 +58,66 @@
 (() => {
   'use strict';
 
+  function getPageType(url){
+    return url.replace(/https:\/\/dtf\.ru\/([^]+)/, (d, text) => {
+      let arr = text.split('/');
+
+      if(arr[0] && arr[0].match(/^popular$/)){
+        if(!arr[1]) {
+          // console.log('Popular');
+          return 'popular';
+        }
+      }
+
+      if(arr[0] && arr[0].match(/^new$/)){
+        if(!arr[1]) {
+          // console.log('Popular');
+          return 'new';
+        }
+      }
+
+      if(arr[0] && arr[0].match(/^my$/)){
+        if(arr[1] && arr[1].match(/^new$/)) {
+          // console.log('Popular');
+          return 'my new';
+        }
+      }
+
+      if(arr[0] && arr[0].match(/^u$/)){
+        if(arr[1] && !arr[2]) {
+          // console.log('User');
+          return 'user pages';
+        }
+        if(arr[1] && arr[2]) {
+          // console.log('User blog');
+          return 'topics';
+        }
+      }
+      if(arr[0] && arr[0].match(/^s$/)){
+        if(arr[1] && !arr[2]) {
+          // console.log('Subsite');
+          return 'subsites';
+        }
+        if(arr[1] && arr[2]) {
+          // console.log('Subsite topic');
+          return 'topics';
+        }
+      }
+      if(arr[0] && !arr[0].match(/^(u|s)$/)){
+        if(arr[0] && !arr[1]) {
+          // console.log('DTF subsite');
+          return 'subsites';
+        }
+        if(arr[0] && arr[1]) {
+          // console.log('DTF subsite Topic');
+          return 'topics';
+        }
+      }
+    })
+  }
+
   function commentsSearch(){
-    let filter = /(<(?:b|i|s|a)>|\|\||:(?:e|eg|s|sg|i|g|emb|alb):)[^]+(\1)/i;
+    let filter = /(<(?:b|i|s|a)>|\|\||:(?:e|eg|s|sg|i|g|v|emb|alb):)[^]+(\1)/i;
     for(let i = 0, cmm = document.querySelectorAll(`.comments .comment__text`), cmmLength = cmm.length; i < cmmLength; i++){
       if(cmm[i].textContent.trim().match(filter)){
         attachmentsChecker(cmm[i].textContent.trim(), cmm[i]);
@@ -74,11 +131,6 @@
     run();
   });
 
-  let mainVars = {
-    picked: false,
-    btnPressed: {}
-  };
-
 // mainCfg = defaultSettings;
 // console.log(setSettings)
   async function run(){
@@ -86,8 +138,13 @@
     initCfg = {
       func: () => {
         console.log('Встраивание инициализации в DTF-Markdown...');
+        mainVars = {
+          btnPressed: {}
+        };
+        // Пример перезаписи стандартных настроек. mainCfg['album builder']['close after pick'] = false;
+        // mainCfg['album builder']['close after pick'] = false;
 
-        new Css('test', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+emojiPickerCSS+gifPickerCSS);
+        new Css('DTF-Markdown', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+emojiPickerCSS+gifPickerCSS);
         new Css('settingsLoader', menuLoaderCSS);
         // new MarkdownPanel(document.querySelector(`.comment-writing`), document.querySelector(`.comment-writing *:nth-child(1)`));
       }
@@ -97,29 +154,31 @@
       await settingsLoader(db, initCfg);
       console.log(db);
     }
-    new MarkdownPanel(
-      document.querySelector(`.comment-writing__content`).children[0],
-      document.querySelector(`.comment-writing__content`).children[0].children[0]);
-    if(mainCfg['attachments']['comments']['search']['obs']) new Obs({
-      target: document.querySelector(`.comments__content.l-island-a`),
-      check: true,
-      search: /comment/,
-      name: 'comments',
-      mode: 'start',
-      cfg: {attributes: false, childList: true, subtree: false, characterData: false},
-      func: (item) => {
-        if(!item.classList.value > 0) return;
-        if(item.classList.value.match(/comment/)){
-          // console.log(item)
-          let filter = /(<(?:b|i|s|a)>|\|\||:(?:e|eg|s|sg|i|g|emb|alb):)[^]+(\1)/i;
-          if(item.querySelector(`.comment__text`).textContent.trim().match(filter)){
-            console.log('OBS founded item!');
-            attachmentsChecker(item.querySelector(`.comment__text`).textContent.trim(), item.querySelector(`.comment__text`));
+    if(getPageType(document.location.href) === 'topics'){
+      new MarkdownPanel(
+        document.querySelector(`.comment-writing__content`).children[0],
+        document.querySelector(`.comment-writing__content`).children[0].children[0]);
+      if(mainCfg['attachments']['comments']['search']['obs']) new Obs({
+        target: document.querySelector(`.comments__content.l-island-a`),
+        check: true,
+        search: /comment/,
+        name: 'comments',
+        mode: 'start',
+        cfg: {attributes: false, childList: true, subtree: false, characterData: false},
+        func: (item) => {
+          if(!item.classList.value > 0) return;
+          if(item.classList.value.match(/comment/)){
+            // console.log(item)
+            let filter = /(<(?:b|i|s|a)>|\|\||:(?:e|eg|s|sg|i|g|v|emb|alb):)[^]+(\1)/i;
+            if(item.querySelector(`.comment__text`).textContent.trim().match(filter)){
+              console.log('OBS founded item!');
+              attachmentsChecker(item.querySelector(`.comment__text`).textContent.trim(), item.querySelector(`.comment__text`));
+            }
           }
         }
-      }
-    });
-    if(mainCfg['attachments']['comments']['search']['onLoad']) commentsSearch();
+      });
+      if(mainCfg['attachments']['comments']['search']['onLoad']) commentsSearch();
+    }
   }
 
 })();
