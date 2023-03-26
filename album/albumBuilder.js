@@ -221,7 +221,7 @@ class AlbumBuilder {
       cName: 'btn',
       text: 'Add field',
       onclick: () => {
-        new AlbumUrlAdd({
+        this.AlbumUrlAdd({
           path: this.form,
           num: this.form.children.length / 3+1,
           list: this.albumList
