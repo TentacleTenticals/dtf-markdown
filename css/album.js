@@ -1,4 +1,4 @@
-export let albumCSS = (cfg) => {
+let albumCSS = (cfg) => {
   return `
 .dtf-attach.albumMini:is(:not(.preview), .preview) {
   background: black;
