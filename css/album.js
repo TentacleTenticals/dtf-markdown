@@ -112,6 +112,7 @@ let albumCSS = (cfg) => {
   width: ${cfg['album']['items']['size']}px;
   height: ${cfg['album']['items']['size']}px;
   display: flex;
+  align-items: center;
   background: rgb(0, 0, 0);
   /* border-radius: 3px; */
   padding: ${cfg['album']['items']['padding']}px;
