@@ -82,16 +82,16 @@ class GifSearch{
         console.log(item);
         let res = (() => {
           switch(this.previewType.value){
-          case 'gif': return `:g:${item.group}.${item.name}:g:`;
-          case 'image': return `:i:${item.group}.${item.name}:i:`;
-          case 'emoji': return `:e:${item.group}.${item.name}:e:`;
-          case 'sticker': return `:s:${item.group}.${item.name}:s:`;
-          case 'emoji GIF': return `:eg:${item.group}.${item.name}:eg:`;
-          case 'sticker GIF': return `:sg:${item.group}.${item.name}:sg:`;
+          case 'gif': return `:g:${urlCoder.decoder(`https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`)}:g:`;
+          case 'image': return `:i:${urlCoder.decoder(`https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`)}:i:`;
+          case 'emoji': return `:e:${urlCoder.decoder(`https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`)}:e:`;
+          case 'sticker': return `:s:${urlCoder.decoder(`https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`)}:s:`;
+          case 'emoji GIF': return `:eg:${urlCoder.decoder(`https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`)}:eg:`;
+          case 'sticker GIF': return `:sg:${urlCoder.decoder(`https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`)}:sg:`;
           case 'video': return `:v:https://thumbs.gfycat.com/${item.gifId}-mobile.mp4:v:`;
-          case 'gif URL': return `https://thumbs.gfycat.com/${item.gifId}-size_restricted.gif`;
-          case 'image URL': return `https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
-          case 'video URL': return `https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`;
+          case 'GIF link': return `https://thumbs.gfycat.com/${item.gifId}-size_restricted.gif`;
+          case 'Image link': return `https://thumbs.gfycat.com/${item.gifId}-mobile.jpg`;
+          case 'Video link': return `https://thumbs.gfycat.com/${item.gifId}-mobile.mp4`;
         };
         })();
         this.Modify(res);
@@ -152,9 +152,9 @@ class GifSearch{
               case 'emoji GIF': return `:eg:${urlCoder.decoder(item.miniUrl)}:eg:`;
               case 'sticker GIF': return `:sg:${urlCoder.decoder(item.miniUrl)}:sg:`;
               case 'video': return `:v:${urlCoder.decoder(item.miniUrl)}:v:`;
-              case 'gif URL': return item.gifUrl;
-              case 'image URL': return item.posterUrl;
-              case 'video URL': return item.miniUrl;
+              case 'GIF link': return item.gifUrl;
+              case 'Image link': return item.posterUrl;
+              case 'Video link': return item.miniUrl;
             }
           }else
           if(mode === 'Tenor'){
@@ -167,9 +167,9 @@ class GifSearch{
               case 'emoji GIF': return `:eg:${urlCoder.decoder(item.media_formats.tinywebm.url)}:eg:`;
               case 'sticker GIF': return `:sg:${urlCoder.decoder(item.media_formats.tinywebm.url)}:sg:`;
               case 'video': return `:v:${urlCoder.decoder(item.media_formats.tinywebm.url)}:v:`;
-              case 'gif URL': return item.media_formats.gif.url;
-              case 'image URL': return item.media_formats.gifpreview.url;
-              case 'video URL': return item.media_formats.tinywebm.url;
+              case 'GIF link': return item.media_formats.gif.url;
+              case 'Image link': return item.media_formats.gifpreview.url;
+              case 'Video link': return item.media_formats.tinywebm.url;
             }
           }
           return
@@ -367,15 +367,11 @@ class GifSearch{
         },
         {
           label: 'Emojis',
-          options: ['emoji', 'emojiGif']
+          options: ['emoji', 'emoji GIF']
         },
         {
           label: 'Stickers',
-          options: ['sticker', 'stickerGif']
-        },
-        {
-          label: 'Embeds',
-          option: 'embed'
+          options: ['sticker', 'sticker GIF']
         },
         {
           label: 'Videos',
@@ -383,11 +379,7 @@ class GifSearch{
         },
         {
           label: 'Links',
-          option: 'link'
-        },
-        {
-          label: 'Urls',
-          option: 'url'
+          options: ['GIF link', 'Video link', 'Image link']
         }
       ]
     });
