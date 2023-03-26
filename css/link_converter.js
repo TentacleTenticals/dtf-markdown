@@ -1,5 +1,5 @@
 let linkConverterCSS = `
-.linkConverter .btn {
+.linkConverter button {
   background-image: repeating-linear-gradient(
     180deg,
     rgb(90 90 90) 0%,
@@ -12,7 +12,7 @@ let linkConverterCSS = `
   border-radius: 3px;
   box-shadow: inset 0 0 2px 0px rgb(255 255 255);
 }
-.linkConverter .btn:hover {
+.linkConverter button:hover {
   filter: brightness(1.1);
 }
 
