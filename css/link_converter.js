@@ -1,5 +1,5 @@
 let linkConverterCSS = `
-.dtf-albumBuilder button {
+.linkConverter button {
   background-image: repeating-linear-gradient( 180deg, rgb(90 90 90) 0%, rgb(30 30 30) 50%, rgb(90 90 90) 100% );
   background-color: rgb(0 0 0);
   color: rgb(215 212 212);
