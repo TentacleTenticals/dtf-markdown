@@ -250,10 +250,10 @@ class GifSearch{
 
     this.search=new Input({
       path: this.mainForm,
-      cName: 'search',
+      cName: 'srch',
       name: 'search',
       type: 'text',
-      placeholder: 'Введите поисковый запрос',
+      placeholder: 'Введите запрос',
       autocomplete: 'off',
       rtn: [],
       onkeydown: (e) => {
@@ -308,9 +308,7 @@ class GifSearch{
         setTimeout(() => {
           if(!e.target.value) return;
           if(this.main.querySelector(`.mask[name=${e.target.value}]`)) this.main.querySelector(`.mask[name=${e.target.value}]`).focus();
-        }, 100)
-        // console.log(e.val())
-        // console.log(ui)
+        }, 100);
       }
     });
 
@@ -328,10 +326,30 @@ class GifSearch{
         this.video.poster='';
         if(e.target.value === 'Default'){
           this.list.className='list default';
+          $(this.search).autocomplete({
+            delay: 500,
+            source: (() => {
+              let arr = [];
+              for(let g in gifsDB){
+                // console.log(g);
+                for(let e in gifsDB[g]){
+                  arr.push(e);
+                }
+              }
+              console.log(arr)
+              return arr;
+            })(),
+            select: (e, ui) => {
+              setTimeout(() => {
+                if(!e.target.value) return;
+                if(this.main.querySelector(`.mask[name=${e.target.value}]`)) this.main.querySelector(`.mask[name=${e.target.value}]`).focus();
+              }, 100);
+            }
+          });
 
           for(let g in gifsDB){
             if(!mainCfg['gif picker']['groups to show'][g]) continue;
-            this.group=new GifGroup({
+            this.group=this.GifGroup({
               path: this.list,
               groupName: g
             });
@@ -344,6 +362,9 @@ class GifSearch{
           }
         }else{
           this.list.className='list';
+          $(this.search).autocomplete({
+            source: {}
+          });
         }
       }
     });
