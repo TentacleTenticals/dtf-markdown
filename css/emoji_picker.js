@@ -1,4 +1,4 @@
-export let emojiPickerCSS = `
+let emojiPickerCSS = `
 .emojiPicker .srch {
   background-color: rgb(0 0 0);
   color: rgb(255 255 255);
