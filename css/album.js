@@ -11,6 +11,36 @@ let albumCSS = (cfg) => {
   z-index: 1;
 }
 
+.dtf-previewer :is(.prevBtn, .nextBtn) {
+  position: absolute;
+  width: 40px;
+  height: 50%;
+  top: 25%;
+  font-size: 26px;
+  border-radius: 1px;
+  border: 1px solid rgb(0 0 0);
+  box-shadow: 0 0 2px 1px rgb(255 255 255);
+}
+.dtf-previewer .prevBtn {
+  left: 11%;
+}
+.dtf-previewer .nextBtn {
+  right: 10.5%;
+}
+.dtf-previewer .closeBtn {
+  position: absolute;
+  background-color: rgb(255 0 0);
+  color: rgb(255 255 255);
+  top: 10px;
+  right: 9%;
+  width: 50px;
+  height: 50px;
+  font-size: 22px;
+  line-height: 21px;
+  /* aspect-ratio: 1/1; */
+  border-radius: 50%;
+}
+
 .dtf-attach.albumMini:is(:not(.preview), .preview) {
   background: black;
   width: max-content;
