@@ -112,7 +112,6 @@ let albumCSS = (cfg) => {
   width: ${cfg['album']['items']['size']}px;
   height: ${cfg['album']['items']['size']}px;
   display: flex;
-  align-items: center;
   background: rgb(0, 0, 0);
   /* border-radius: 3px; */
   padding: ${cfg['album']['items']['padding']}px;
@@ -167,7 +166,6 @@ let albumCSS = (cfg) => {
   max-height: calc(100px - 6px);
   position: relative;
   margin: auto;
-  transform-origin: 0% 0%;
 }
 
 .dtf-attach.albumMini:is(:not(.preview), .preview) .mask.picked {
@@ -181,7 +179,12 @@ let albumCSS = (cfg) => {
   z-index: 11;
 }
 .dtf-attach.albumMini:is(:not(.preview), .preview) .mask.picked img {
-  max-width: unset;
-  max-height: unset;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.dtf-attach.albumMini .mask.picked.zoomed img {
+  transform-origin: 0% 0%;
+  overflow: auto;
 }`;
 };
