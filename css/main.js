@@ -222,17 +222,17 @@ let mainCSS = `
   cursor: pointer;
 }
 
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
     .mask.picked, .gifSearcher .list, .ui-autocomplete)::-webkit-scrollbar {
   width: 17px;
   background: unset;
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
     .mask.picked, .gifSearcher
     .list, .ui-autocomplete)::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
     .mask.picked, .ui-autocomplete)::-webkit-scrollbar-track-piece {
   background-color: unset;
   border: 3px solid rgba(155, 105, 105, 0);
@@ -240,7 +240,7 @@ let mainCSS = `
   width: 1px;
   height: 1px;
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
     .mask.picked, .gifSearcher
     .list, .ui-autocomplete)::-webkit-scrollbar-thumb {
   border: 5px solid transparent;
@@ -249,7 +249,7 @@ let mainCSS = `
     inset 0px 0px 5px 1px rgb(135 185 249 / 60%),
     inset 0px 0px 0px 1px rgb(41 206 145 / 12%);
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
     .mask.picked, .gifSearcher
     .list, .ui-autocomplete)::-webkit-scrollbar-corner {
   background-color: unset;
