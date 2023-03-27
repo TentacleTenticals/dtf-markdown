@@ -1,5 +1,16 @@
 let albumCSS = (cfg) => {
   return `
+.dtf-previewer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background-color: black;
+  color: white;
+  z-index: 1;
+}
+
 .dtf-attach.albumMini:is(:not(.preview), .preview) {
   background: black;
   width: max-content;
