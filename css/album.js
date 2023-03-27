@@ -13,6 +13,8 @@ let albumCSS = (cfg) => {
 
 .dtf-previewer :is(.prevBtn, .nextBtn) {
   position: absolute;
+  background-color: rgb(218 232 243);
+  color: rgb(0 0 0);
   width: 40px;
   height: 50%;
   top: 25%;
@@ -20,6 +22,7 @@ let albumCSS = (cfg) => {
   border-radius: 1px;
   border: 1px solid rgb(0 0 0);
   box-shadow: 0 0 2px 1px rgb(255 255 255);
+  cursor: pointer;
 }
 .dtf-previewer .prevBtn {
   left: 11%;
@@ -37,8 +40,10 @@ let albumCSS = (cfg) => {
   height: 50px;
   font-size: 22px;
   line-height: 21px;
-  /* aspect-ratio: 1/1; */
   border-radius: 50%;
+}
+.dtf-previewer :is(.prevBtn, .nextBtn, .closeBtn):hover {
+  filter: brightness(1.1);
 }
 
 .dtf-attach.albumMini:is(:not(.preview), .preview) {
