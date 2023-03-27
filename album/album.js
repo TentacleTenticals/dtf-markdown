@@ -1,4 +1,4 @@
-export class Album {
+class Album {
   AlbumItem({path, url, text, spoiler}){
     let mask=new Div({
       path: path,
