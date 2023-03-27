@@ -42,7 +42,6 @@
 
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/album/album.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/album/albumBuilder.js
-// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/album/albumPreviewer.js
 
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/attachments/checker.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/comments/previewer.js
@@ -130,43 +129,72 @@
         mainVars = {
           btnPressed: {}
         };
-        // Пример перезаписи стандартных настроек. mainCfg['album builder']['close after pick'] = false;
-        // mainCfg['album builder']['close after pick'] = false;
+        /* Как переписать стандартные настройки (минуя меню настроек): пропишите mainCfg['путь']['путь'] = значение */
+        /* К примеру, mainCfg['album builder']['tokens']['ImgBB']['clientToken'] = 'mySuperSecretToken'; */
+        // mainCfg['album builder']['tokens']['ImgBB']['clientToken'] = 'mySuperSecretToken';
 
         new Css('DTF-Markdown', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+albumBuilderCSS+emojiPickerCSS+gifPickerCSS+linkConverterCSS);
         new Css('settingsLoader', menuLoaderCSS);
+        if(getPageType(document.location.href) === 'topics'){
+          new MarkdownPanel(
+            document.querySelector(`.comment-writing__content`).children[0],
+            document.querySelector(`.comment-writing__content`).children[0].children[0]);
+          if(mainCfg['attachments']['comments']['search']['obs']) new Obs({
+            target: document.querySelector(`.comments__content.l-island-a`),
+            check: true,
+            search: /comment/,
+            name: 'comments',
+            mode: 'start',
+            cfg: {attributes: false, childList: true, subtree: false, characterData: false},
+            func: (item) => {
+              if(!item.classList.value > 0) return;
+              if(item.classList.value.match(/comment/)){
+                // console.log(item)
+                let filter = /(<(?:b|i|s|a)>|\|\||:(?:e|eg|s|sg|i|g|v|emb|alb):)[^]+(\1)/i;
+                if(item.querySelector(`.comment__text`).textContent.trim().match(filter)){
+                  console.log('OBS founded item!');
+                  attachmentsChecker(item.querySelector(`.comment__text`).textContent.trim(), item.querySelector(`.comment__text`));
+                }
+              }
+            }
+          });
+          if(mainCfg['attachments']['comments']['search']['onLoad']) commentsSearch();
+        }
         // new MarkdownPanel(document.querySelector(`.comment-writing`), document.querySelector(`.comment-writing *:nth-child(1)`));
       }
     }
     if(!mainCfg){
       db = dbGen(defaultSettings['scriptInfo']);
       await settingsLoader(db, initCfg);
-      console.log(db);
-    }
-    if(getPageType(document.location.href) === 'topics'){
-      new MarkdownPanel(
-        document.querySelector(`.comment-writing__content`).children[0],
-        document.querySelector(`.comment-writing__content`).children[0].children[0]);
-      if(mainCfg['attachments']['comments']['search']['obs']) new Obs({
-        target: document.querySelector(`.comments__content.l-island-a`),
-        check: true,
-        search: /comment/,
-        name: 'comments',
-        mode: 'start',
-        cfg: {attributes: false, childList: true, subtree: false, characterData: false},
-        func: (item) => {
-          if(!item.classList.value > 0) return;
-          if(item.classList.value.match(/comment/)){
-            // console.log(item)
-            let filter = /(<(?:b|i|s|a)>|\|\||:(?:e|eg|s|sg|i|g|v|emb|alb):)[^]+(\1)/i;
-            if(item.querySelector(`.comment__text`).textContent.trim().match(filter)){
-              console.log('OBS founded item!');
-              attachmentsChecker(item.querySelector(`.comment__text`).textContent.trim(), item.querySelector(`.comment__text`));
+      // console.log(db);
+    }else
+    if(mainCfg){
+      console.log('Main is here!');
+      if(getPageType(document.location.href) === 'topics'){
+        new MarkdownPanel(
+          document.querySelector(`.comment-writing__content`).children[0],
+          document.querySelector(`.comment-writing__content`).children[0].children[0]);
+        if(mainCfg['attachments']['comments']['search']['obs']) new Obs({
+          target: document.querySelector(`.comments__content.l-island-a`),
+          check: true,
+          search: /comment/,
+          name: 'comments',
+          mode: 'start',
+          cfg: {attributes: false, childList: true, subtree: false, characterData: false},
+          func: (item) => {
+            if(!item.classList.value > 0) return;
+            if(item.classList.value.match(/comment/)){
+              // console.log(item)
+              let filter = /(<(?:b|i|s|a)>|\|\||:(?:e|eg|s|sg|i|g|v|emb|alb):)[^]+(\1)/i;
+              if(item.querySelector(`.comment__text`).textContent.trim().match(filter)){
+                console.log('OBS founded item!');
+                attachmentsChecker(item.querySelector(`.comment__text`).textContent.trim(), item.querySelector(`.comment__text`));
+              }
             }
           }
-        }
-      });
-      if(mainCfg['attachments']['comments']['search']['onLoad']) commentsSearch();
+        });
+        if(mainCfg['attachments']['comments']['search']['onLoad']) commentsSearch();
+      }
     }
   }
 
