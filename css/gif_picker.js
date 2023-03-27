@@ -1,12 +1,16 @@
 let gifPickerCSS = `
-.gifSearcher .header {
-  background-color: rgb(255 255 255);
-  color: black;
-  text-align: center;
+.gifSearcher .srch {
+  background-color: rgb(0 0 0);
+  color: rgb(255 255 255);
+  border: unset;
+  border-radius: 2px;
+  box-shadow: inset 0 0 5px 0px rgb(179 39 161);
+}
+.gifSearcher .srch::placeholder {
+  color: rgb(173 173 173);
   font-size: 14px;
-  font-weight: 600;
-  padding: 2px 0px 1px 0px;
-  line-height: 14px;
+  font-weight: 700;
+  font-family: 'Nunito Sans', sans-serif;
 }
 
 .gifSearcher form {
