@@ -222,17 +222,17 @@ let mainCSS = `
   cursor: pointer;
 }
 
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
     .mask.picked, .gifSearcher .list, .ui-autocomplete)::-webkit-scrollbar {
   width: 17px;
   background: unset;
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
     .mask.picked, .gifSearcher
     .list, .ui-autocomplete)::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
     .mask.picked, .ui-autocomplete)::-webkit-scrollbar-track-piece {
   background-color: unset;
   border: 3px solid rgba(155, 105, 105, 0);
@@ -240,7 +240,7 @@ let mainCSS = `
   width: 1px;
   height: 1px;
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
     .mask.picked, .gifSearcher
     .list, .ui-autocomplete)::-webkit-scrollbar-thumb {
   border: 5px solid transparent;
@@ -249,7 +249,7 @@ let mainCSS = `
     inset 0px 0px 5px 1px rgb(135 185 249 / 60%),
     inset 0px 0px 0px 1px rgb(41 206 145 / 12%);
 }
-:is(.emojiPicker .groupList, .dtf-albumBuilder form, .albumMini .list, .albumMini
+:is(.emojiPicker .groupList, .dtf-albumBuilder form, .album .list, .album
     .mask.picked, .gifSearcher
     .list, .ui-autocomplete)::-webkit-scrollbar-corner {
   background-color: unset;
@@ -273,17 +273,6 @@ let mainCSS = `
 .buttonPanel button .label {
   margin: auto;
   font-size: 10px;
-}
-
-.dtf-previewer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  background-color: black;
-  color: white;
-  z-index: 1;
 }
 
 .search {
@@ -356,7 +345,7 @@ html .ui-autocomplete {
   padding: 3px;
   margin: 5px 0 0 0;
   border-radius: 2px;
-  box-shadow: 0px 0px 3px 0px rgb(0 0 0), 0px 1px 3px 0px rgb(255 255 255);
+  box-shadow: 0px 0px 3px 0px rgb(0 0 0);
   z-index: 15;
 }
 .dtf-window .header {
