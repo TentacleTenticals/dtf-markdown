@@ -9,8 +9,8 @@ class Album {
       //   e.target.focus();
       // },
       onfocus: (e) => {
-        // this.dtfHeader.classList.add('hidden');
-        // this.dtfCommentRail.classList.add('hidden');
+        this.dtfHeader.classList.add('hidden');
+        this.dtfCommentRail.classList.add('hidden');
         e.target.classList.add('picked');
         mainVars.picked = e.target;
         this.AlbumMiniPreviewer({
@@ -29,13 +29,7 @@ class Album {
           this.nextAlbumItem(e);
         }else
         if(e.code === 'Escape'){
-          mainVars.picked.blur();
-          mainVars.picked.children[1].style.scale = '1';
-          mainVars.picked.classList.remove('picked');
-          mainVars.picked.classList.remove('zoomed');
-          document.getElementById('dtf-previewer')?.remove();
-          this.dtfHeader.classList.remove('hidden');
-          this.dtfCommentRail.classList.remove('hidden');
+          this.exitPreview();
         }else
         if(e.code === 'ControlLeft'){
           mainVars.btnPressed.ctrl = true;
@@ -127,14 +121,7 @@ class Album {
             nextAlbumItem(e);
           }else
           if(e.code === 'Escape'){
-            mainVars.picked.blur();
-            mainVars.picked.children[1].style.transform = 'scale(1.0)';
-            mainVars.picked.classList.remove('picked', 'zoomed');
-            // mainVars.picked.classList.remove('zoomed');
-            // this.main.remove();
-            this.dtfHeader.classList.remove('hidden');
-            this.dtfCommentRail.classList.remove('hidden');
-            this.previewer.remove();
+            this.exitPreview();
           }else
           if(e.code === 'ControlLeft'){
             mainVars.btnPressed.ctrl = true;
@@ -167,6 +154,31 @@ class Album {
         }
       });
 
+      new Button({
+        path: this.previewer,
+        cName: 'prevBtn',
+        text: '🔙',
+        onclick: () => {
+          this.prevAlbumItem();
+        }
+      });
+      new Button({
+        path: this.previewer,
+        cName: 'nextBtn',
+        text: '🔜',
+        onclick: () => {
+          this.nextAlbumItem();
+        }
+      });
+      new Button({
+        path: this.previewer,
+        cName: 'closeBtn',
+        text: '✖️',
+        onclick: () => {
+          this.exitPreview();
+        }
+      });
+
       this.statsList=new Div({
         path: this.previewer,
         cName: 'statsList',
@@ -179,7 +191,7 @@ class Album {
         rtn: [],
         // cName: 'statsList',
         // id: 'AMP-statsList',
-        text: `Images: ${Array.prototype.indexOf.call(mainVars.picked.parentNode.children, mainVars.picked) + 1} / ${mainVars.picked.parentNode.childElementCount}`
+        text: `🖼️: ${Array.prototype.indexOf.call(mainVars.picked.parentNode.children, mainVars.picked) + 1} / ${mainVars.picked.parentNode.childElementCount}`
       });
 
       this.zoomLevel=new Div({
@@ -187,41 +199,43 @@ class Album {
         rtn: [],
         // cName: 'statsList',
         // id: 'AMP-zoomLevel',
-        text: `Zoom: ${mainVars.picked.children[1].style.scale * 100}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`
+        text: `🔎: ${mainVars.picked.children[1].style.scale * 100}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`
       });
 
       this.itemText=new Div({
         path: this.statsList,
         rtn: [],
-        text: `Text: ${mainVars.picked.children[1].getAttribute('text')||'-'}`
+        text: `📜: ${mainVars.picked.children[1].getAttribute('text')||'-'}`
       });
     }else
     {
-      this.imageCount.textContent=`Images: ${Array.prototype.indexOf.call(mainVars.picked.parentNode.children, mainVars.picked) + 1} / ${mainVars.picked.parentNode.childElementCount}`;
-      this.zoomLevel.textContent=`Zoom: ${mainVars.picked.children[1].style.scale * 100}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`;
-      this.itemText.textContent=`Text: ${mainVars.picked.children[1].getAttribute('text')||'-'}`;
+      this.imageCount.textContent=`🖼️: ${Array.prototype.indexOf.call(mainVars.picked.parentNode.children, mainVars.picked) + 1} / ${mainVars.picked.parentNode.childElementCount}`;
+      this.zoomLevel.textContent=`🔎: ${mainVars.picked.children[1].style.scale * 100}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`;
+      this.itemText.textContent=`📜: ${mainVars.picked.children[1].getAttribute('text')||'-'}`;
     }
   }
   zoom(mode){
     if(mode === 'in') {
       if(((+mainVars.picked.children[1].style.scale + mainCfg['album']['previewer']['zoom power']) * 100) == 100) mainVars.picked.classList.remove('zoomed');
       mainVars.picked.children[1].style.scale = +mainVars.picked.children[1].style.scale + mainCfg['album']['previewer']['zoom power'];
-      this.zoomLevel.textContent = `Zoom: ${(+mainVars.picked.children[1].style.scale * 100)}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`;
+      this.zoomLevel.textContent = `🔎: ${(+mainVars.picked.children[1].style.scale * 100)}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`;
     }
     else
     if(mode === 'out'){
       if(+mainVars.picked.children[1].style.scale > 0 && (+mainVars.picked.children[1].style.scale - mainCfg['album']['previewer']['zoom power']) > 0){
         if(((+mainVars.picked.children[1].style.scale - mainCfg['album']['previewer']['zoom power']) * 100) == 100) mainVars.picked.classList.remove('zoomed');
         mainVars.picked.children[1].style.scale = +mainVars.picked.children[1].style.scale - mainCfg['album']['previewer']['zoom power'];
-        this.zoomLevel.textContent = `Zoom: ${(+mainVars.picked.children[1].style.scale * 100)}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`;
+        this.zoomLevel.textContent = `🔎: ${(+mainVars.picked.children[1].style.scale * 100)}% (${mainVars.picked.classList.value.match(/zoomed/) ? 'zoomed' : 'normal'})`;
       }
     };
   }
   prevAlbumItem(e) {
     if(!mainVars.picked) return;
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
+    if(e){
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
     if(mainVars.picked.previousElementSibling) {
       mainVars.picked.children[1].style.scale = '1';
       mainVars.picked.classList.remove('picked');
@@ -238,9 +252,11 @@ class Album {
   }
   nextAlbumItem(e) {
     if(!mainVars.picked) return;
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
+    if(e){
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
     if(mainVars.picked.nextElementSibling) {
       mainVars.picked.children[1].style.scale = '1';
       mainVars.picked.classList.remove('picked');
@@ -255,6 +271,15 @@ class Album {
       console.log(mainVars.picked.parentElement.firstElementChild);
       mainVars.picked.parentElement.firstElementChild.click();
     }
+  }
+  exitPreview(){
+    mainVars.picked.blur();
+    mainVars.picked.children[1].style.scale = '1';
+    mainVars.picked.classList.remove('picked');
+    mainVars.picked.classList.remove('zoomed');
+    this.previewer.remove();
+    this.dtfHeader.classList.remove('hidden');
+    this.dtfCommentRail.classList.remove('hidden');
   }
   constructor({path, type, albumArr, rtn}){
     this.dtfHeader=document.querySelector(`.site-header-container`);
