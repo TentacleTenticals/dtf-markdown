@@ -129,6 +129,7 @@ let attachmentsCSS = (cfg) => {
   aspect-ratio: 1/0.5;
   overflow: hidden;
   box-shadow: 0 0 3px 1px rgb(0 0 0);
+  z-index: 0;
 }
 .dtf-attach.embed.yt {
   background-color: rgb(0 0 0);
