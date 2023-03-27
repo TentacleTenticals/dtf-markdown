@@ -1,4 +1,18 @@
-let emojiPickerCSS = `
+export let emojiPickerCSS = `
+.emojiPicker .srch {
+  background-color: rgb(0 0 0);
+  color: rgb(255 255 255);
+  border: unset;
+  border-radius: 2px;
+  box-shadow: inset 0 0 5px 0px rgb(179 39 161);
+}
+.emojiPicker .srch::placeholder {
+  color: rgb(173 173 173);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
 .emojiPicker select {
   background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
@@ -85,30 +99,20 @@ let emojiPickerCSS = `
 .emojiPicker .emojiGroup.hidden {
   display: none;
 }
-.emojiPicker .groupName {
-  /* text-align: center;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Play', sans-serif;
-  color: rgb(223 153 192);
-  margin: 2px 0px 3px 0px;
-  padding: 0px 0px 0px 17px;
-  border-radius: 3px; */
-}
 
 .emojiPicker .groupName {
   text-align: center;
   background-color: rgb(255 255 255);
   color: rgb(0 0 0);
-  padding: 2px 0 1px 0;
+  padding: 4px 0 0 0;
   margin: 0 0 6px 0;
   font-weight: 600;
-  font-size: 10px;
+  font-size: 15px;
   letter-spacing: 0.5px;
+  line-height: 12px;
+  font-family: 'Teko', sans-serif;
   text-transform: uppercase;
-  font-family: 'Raleway';
   border: 1px dashed rgb(0 0 0);
-  /* box-shadow: inset 0px 0px 4px 0px rgb(0 0 0); */
   cursor: pointer;
 }
 
