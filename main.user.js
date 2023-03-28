@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DTF-Markdown
 // @namespace    TentacleTenticals
-// @version      1.0
+// @version      1.0.1
 // @description  Markdown for DTF
 // @author       TentacleTenticals
 // @match        https://dtf.ru/*
@@ -58,6 +58,7 @@
   'use strict';
 
   function getPageType(url){
+    if(!url) return;
     return url.replace(/https:\/\/dtf\.ru\/([^]+)/, (d, text) => {
       let arr = text.split('/');
 
@@ -135,7 +136,7 @@
 
         new Css('DTF-Markdown', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+albumBuilderCSS+emojiPickerCSS+gifPickerCSS+linkConverterCSS);
         new Css('settingsLoader', menuLoaderCSS);
-        if(getPageType(document.location.href) === 'topics'){
+        if(getPageType(document.location.href && document.querySelector(`.comment-writing__content`)) === 'topics'){
           new MarkdownPanel(
             document.querySelector(`.comment-writing__content`).children[0],
             document.querySelector(`.comment-writing__content`).children[0].children[0]);
@@ -170,7 +171,7 @@
     }else
     if(mainCfg){
       console.log('Main is here!');
-      if(getPageType(document.location.href) === 'topics'){
+      if(getPageType(document.location.href) === 'topics' && document.querySelector(`.comment-writing__content`)){
         new MarkdownPanel(
           document.querySelector(`.comment-writing__content`).children[0],
           document.querySelector(`.comment-writing__content`).children[0].children[0]);
