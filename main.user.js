@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DTF-Markdown
 // @namespace    TentacleTenticals
-// @version      1.0.2
+// @version      1.0.3
 // @description  Markdown for DTF
 // @author       TentacleTenticals
 // @match        https://dtf.ru/*
@@ -135,7 +135,7 @@
         /* К примеру, mainCfg['album builder']['tokens']['ImgBB']['clientToken'] = 'mySuperSecretToken'; */
         // mainCfg['album builder']['tokens']['ImgBB']['clientToken'] = 'mySuperSecretToken';
 
-        if(!styleChecker('DTF-core')) new El().Css('DTF-core', dtfCore);
+        new Css('DTF-core', dtfCore, true);
 
         new Css('DTF-Markdown', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+albumBuilderCSS+emojiPickerCSS+gifPickerCSS+linkConverterCSS);
         new Css('settingsLoader', menuLoaderCSS);
