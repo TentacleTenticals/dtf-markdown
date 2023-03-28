@@ -1,4 +1,4 @@
-let mainCSS = `
+let dtfCore = `
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500&display=swap');
 
 .dtf-window {
