@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DTF-Markdown
 // @namespace    TentacleTenticals
-// @version      1.0.1
+// @version      1.0.2
 // @description  Markdown for DTF
 // @author       TentacleTenticals
 // @match        https://dtf.ru/*
@@ -20,6 +20,7 @@
 // @require https://github.com/TentacleTenticals/dtf-libs-2.0/raw/main/libs/settings/opener.js
 //
 // @require https://github.com/TentacleTenticals/dtf-libs-2.0/raw/main/libs/settings/css/menuLoader.js
+// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/css/dtfCore.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/css/main.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/css/attachments.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/css/gif_picker.js
@@ -38,7 +39,7 @@
 //
 // @require https://github.com/TentacleTenticals/dtf-libs-2.0/raw/main/libs/main%20classes.js
 
-// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/markdown/panel.js?
+// @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/markdown/panel.js
 
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/album/album.js
 // @require https://github.com/TentacleTenticals/dtf-markdown/raw/main/album/albumBuilder.js
@@ -134,9 +135,11 @@
         /* К примеру, mainCfg['album builder']['tokens']['ImgBB']['clientToken'] = 'mySuperSecretToken'; */
         // mainCfg['album builder']['tokens']['ImgBB']['clientToken'] = 'mySuperSecretToken';
 
+        if(!styleChecker('DTF-core')) new El().Css('DTF-core', dtfCore);
+
         new Css('DTF-Markdown', mainCSS+attachmentsCSS(mainCfg)+albumCSS(mainCfg)+albumBuilderCSS+emojiPickerCSS+gifPickerCSS+linkConverterCSS);
         new Css('settingsLoader', menuLoaderCSS);
-        if(getPageType(document.location.href && document.querySelector(`.comment-writing__content`)) === 'topics'){
+        if(getPageType(document.location.href) === 'topics' && document.querySelector(`.comment-writing__content`)){
           new MarkdownPanel(
             document.querySelector(`.comment-writing__content`).children[0],
             document.querySelector(`.comment-writing__content`).children[0].children[0]);
