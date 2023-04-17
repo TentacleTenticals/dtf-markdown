@@ -1,4 +1,4 @@
-function setSettings(main, mainCfg){
+initMenu.setSettings = (main, mainCfg) => {
   new Field({
     path: main,
     groupName: 'attachments',
