@@ -1,4 +1,4 @@
-function setInfo(main, mainCfg){
+initMenu.setInfo = (main, mainCfg) => {
   const preview=new Field({
     path: main,
     groupName: 'attachments',
